@@ -1,5 +1,3 @@
-
-import { useColorMode } from "./components/ui/color-mode";
 import { CesiumViewer } from "./CesiumViewer";
 
 function App() {
