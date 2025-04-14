@@ -1,4 +1,4 @@
-import { CesiumViewer } from "./CesiumViewer";
+import { CesiumViewer } from "./cesium/CesiumViewer";
 
 function App() {
 
