@@ -1,37 +1,27 @@
 import {
+  ArcType,
+  CallbackProperty,
+  Cartesian3,
   ClockRange,
+  Color,
   Entity,
   Ion,
   JulianDate,
   Viewer,
   createWorldTerrainAsync,
 } from "cesium";
+import { PolylineDashMaterialProperty } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { GroundStationLoader } from "./utils/GroundStationLoader";
 import { SatelliteLoader } from "./utils/SatelliteLoader";
-import './cesium.css'
 
 export const CesiumViewer = () => {
   const viewerRef = useRef<HTMLDivElement | null>(null);
   const viewerRefCesium = useRef<Viewer | null>(null);
   const satelliteRef = useRef<Entity | null>(null);
-  const [selectedSatelliteId, setSelectedSatelliteId] = useState<string | null>(
-    null
-  );
 
   const simulationDurationSeconds = 86400; // 1 hour of orbit simulation
-
-  const handleCenterSatellite = (id: string) => {
-    const viewer = viewerRefCesium.current;
-    if (viewer) {
-      const entity = viewer.entities.getById(id);
-      if (entity) {
-        viewer.trackedEntity = entity;
-        setSelectedSatelliteId(id);
-      }
-    }
-  };
 
   useEffect(() => {
     const initViewer = async () => {
@@ -61,6 +51,8 @@ export const CesiumViewer = () => {
 
       viewer.timeline.zoomTo(start, stop);
       viewer.clock.shouldAnimate = true;
+      viewer.clock.shouldAnimate = false;
+      viewer.trackedEntity = undefined;
 
       const loader = new SatelliteLoader(
         viewer,
@@ -75,7 +67,47 @@ export const CesiumViewer = () => {
       }
 
       const gsLoader = new GroundStationLoader(viewer);
-      gsLoader.loadAllStations();
+      const stationEntities = gsLoader.loadAllStations();
+      const satelliteEntities = satellites;
+
+      // Add link entities between each pair (one for now)
+      const links: Entity[] = [];
+
+      stationEntities.forEach((station) => {
+        satelliteEntities.forEach((satellite) => {
+          const link = viewer.entities.add({
+            polyline: {
+              positions: new CallbackProperty(() => {
+                const satPos = satellite.position?.getValue(
+                  viewer.clock.currentTime
+                );
+                const gsPos = station.position?.getValue(
+                  viewer.clock.currentTime
+                );
+                if (!satPos || !gsPos) return [];
+
+                // Visibility check: satellite is above horizon at ground station
+                const gsToSat = Cartesian3.subtract(
+                  satPos,
+                  gsPos,
+                  new Cartesian3()
+                );
+                const gsUp = Cartesian3.normalize(gsPos, new Cartesian3());
+                const dot = Cartesian3.dot(gsToSat, gsUp);
+
+                return dot > 0 ? [gsPos, satPos] : []; // draw only if visible
+              }, false),
+              width: 1.5,
+              material: new PolylineDashMaterialProperty({
+                color: Color.CYAN,
+                dashLength: 16
+              }),
+              arcType: ArcType.NONE,
+            },
+          });
+          links.push(link);
+        });
+      });
 
       return () => viewer.destroy();
     };

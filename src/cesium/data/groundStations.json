@@ -22,5 +22,41 @@
       "owner": "CNES",
       "frequencies": ["UHF", "S-band"],
       "costPerMb": 0.07
+    },
+    {
+      "id": "gs-norway",
+      "name": "Tromsø Ground Station",
+      "description": "Arctic satellite gateway in Norway.",
+      "lat": 69.6496,
+      "lon": 18.956,
+      "alt": 0,
+      "color": "#1E90FF",
+      "owner": "KSAT",
+      "frequencies": ["S-band", "X-band"],
+      "costPerMb": 0.08
+    },
+    {
+      "id": "gs-australia",
+      "name": "Alice Springs Station",
+      "description": "Ground station located in central Australia.",
+      "lat": -23.698,
+      "lon": 133.8807,
+      "alt": 0,
+      "color": "#FFA07A",
+      "owner": "CSIRO",
+      "frequencies": ["X-band", "Ka-band"],
+      "costPerMb": 0.06
+    },
+    {
+      "id": "gs-hawaii",
+      "name": "Hawaii Ground Station",
+      "description": "Mid-Pacific tracking station for various missions.",
+      "lat": 21.3069,
+      "lon": -157.8583,
+      "alt": 0,
+      "color": "#8A2BE2",
+      "owner": "NASA",
+      "frequencies": ["S-band", "UHF"],
+      "costPerMb": 0.09
     }
-  ]
+]
