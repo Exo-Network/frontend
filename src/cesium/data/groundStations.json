@@ -1,0 +1,26 @@
+[
+    {
+      "id": "gs-darmstadt",
+      "name": "Darmstadt Station",
+      "description": "Main ESA control center.",
+      "lat": 49.8708,
+      "lon": 8.6512,
+      "alt": 0,
+      "color": "#00FF00",
+      "owner": "ESA",
+      "frequencies": ["S-band", "X-band"],
+      "costPerMb": 0.05
+    },
+    {
+      "id": "gs-kourou",
+      "name": "Kourou Station",
+      "description": "Launch site in French Guiana.",
+      "lat": 5.236,
+      "lon": -52.768,
+      "alt": 0,
+      "color": "#FFD700",
+      "owner": "CNES",
+      "frequencies": ["UHF", "S-band"],
+      "costPerMb": 0.07
+    }
+  ]
