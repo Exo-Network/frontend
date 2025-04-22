@@ -32,7 +32,7 @@ const AddGroundStationDialog = () => {
   });
 
   //   const toast = useToast();
-  const { open, onOpen, onClose } = useDisclosure();
+  const [open, setOpen] = useState(false)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -56,12 +56,12 @@ const AddGroundStationDialog = () => {
         costPerMb: 0.05,
         description: formData.description,
       });
-      onClose();
+      setOpen(false);
     } catch (err) {}
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={(v) => (v ? onOpen() : onClose())}>
+    <Dialog.Root lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
       <Flex justify="flex-end" mb={4}>
         <Dialog.Trigger asChild>
           <Button colorScheme="green">+ Add Ground Station</Button>
@@ -149,7 +149,7 @@ const AddGroundStationDialog = () => {
               </Fieldset.Root>
             </Dialog.Body>
             <Dialog.Footer>
-              <Dialog.ActionTrigger onClick={()=>onClose()} asChild>
+              <Dialog.ActionTrigger asChild>
                 <Button variant="outline">Cancel</Button>
               </Dialog.ActionTrigger>
               <Button colorScheme="green" onClick={handleSubmit}>
