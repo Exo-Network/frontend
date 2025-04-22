@@ -28,6 +28,21 @@ interface SatelliteState {
     id: string,
     position: SampledPositionProperty
   ) => void;
+  createSatellite: (sat: {
+    id: string;
+    name: string;
+    orbit: {
+      semiMajorAxis?: number;
+      eccentricity?: number;
+      inclination?: number;
+      raan?: number;
+      argOfPeriapsis?: number;
+    };
+    frequencies: string[];
+    pathColor?: string;
+    model?: string;
+    description?: string;
+  }) => void;
 }
 
 export const useSatelliteStore = create<SatelliteState>((set, get) => ({
@@ -48,6 +63,30 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
       updatedSatellites.set(id, { ...satellite, position });
       set({ satellites: updatedSatellites });
     }
+  },
+
+  createSatellite: (sat) => {
+    const orbitParams = {
+      semiMajorAxis: sat.orbit.semiMajorAxis || 0,
+      eccentricity: sat.orbit.eccentricity || 0,
+      inclination: sat.orbit.inclination || 0,
+      raan: sat.orbit.raan || 0,
+      argOfPeriapsis: sat.orbit.argOfPeriapsis || 0,
+    };
+    const position = createSampledPosition(orbitParams, JulianDate.now(), 1400);
+    const newSatellite: Satellite = {
+      id: sat.id,
+      name: sat.name,
+      orbit: sat.orbit,
+      frequencies: sat.frequencies,
+      pathColor: sat.pathColor || "#00ffff",
+      model: sat.model,
+      description: sat.description,
+      position,
+    };
+    const updatedSatellites = new Map(get().satellites);
+    updatedSatellites.set(sat.id, newSatellite);
+    set({ satellites: updatedSatellites });
   },
 }));
 

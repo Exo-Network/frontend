@@ -1,11 +1,8 @@
 import { useSatelliteStore } from "@/store/useSatelliteStore";
+import AddSatelliteDialog from "./addSatelliteDialog";
 import {
   Box,
-  Button,
-  CloseButton,
-  Dialog,
   Flex,
-  Portal,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -21,39 +18,7 @@ const SatelliteAssets = () => {
   return (
     <Flex direction={{ base: "column", md: "row" }} gap={8}>
       <Box w={{ base: "100%", md: "50%" }}>
-        <Dialog.Root>
-          <Flex justify="flex-end" mb={4}>
-            <Dialog.Trigger asChild>
-              <Button colorScheme="green">+ Add Satellite</Button>
-            </Dialog.Trigger>
-          </Flex>
-          <Portal>
-            <Dialog.Backdrop />
-            <Dialog.Positioner>
-              <Dialog.Content>
-                <Dialog.Header>
-                  <Dialog.Title>Create Satellite</Dialog.Title>
-                </Dialog.Header>
-                <Dialog.Body>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                </Dialog.Body>
-                <Dialog.Footer>
-                  <Dialog.ActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </Dialog.ActionTrigger>
-                  <Button>Save</Button>
-                </Dialog.Footer>
-                <Dialog.CloseTrigger asChild>
-                  <CloseButton size="sm" />
-                </Dialog.CloseTrigger>
-              </Dialog.Content>
-            </Dialog.Positioner>
-          </Portal>
-        </Dialog.Root>
+        <AddSatelliteDialog />
         <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4}>
           {satelliteList.map((sat) => (
             <Box

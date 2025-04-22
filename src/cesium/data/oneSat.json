@@ -1,0 +1,17 @@
+{
+  "id": "exo-polar-1",
+  "name": "Polar Sentinel 1",
+  "description": "Low Earth observation satellite in polar orbit. Frequencies: S-band, X-band.",
+  "orbit": {
+    "semiMajorAxis": 7200000,
+    "eccentricity": 0.01,
+    "inclination": 90,
+    "raan": 0,
+    "argOfPeriapsis": 0
+  },
+  "modelAssetId": 3294289,
+  "pathColor": "#00BFFF",
+  "pathWidth": 2,
+  "modelScale": 1000,
+  "frequencies": ["S-band", "X-band"]
+}
