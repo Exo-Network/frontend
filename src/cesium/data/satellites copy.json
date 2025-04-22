@@ -1,0 +1,104 @@
+[
+  {
+    "id": "exo-polar-1",
+    "name": "Polar Sentinel 1",
+    "description": "Low Earth observation satellite in polar orbit. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 7200000,
+      "eccentricity": 0.01,
+      "inclination": 90,
+      "raan": 0,
+      "argOfPeriapsis": 0
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#00BFFF",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-polar-2",
+    "name": "Polar Sentinel 2",
+    "description": "Earth science satellite on retrograde polar orbit. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 7300000,
+      "eccentricity": 0.03,
+      "inclination": 98.2,
+      "raan": 90,
+      "argOfPeriapsis": 45
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#1E90FF",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-equatorial",
+    "name": "EquaCom",
+    "description": "Geostationary satellite in equatorial orbit. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 42164000,
+      "eccentricity": 0.0,
+      "inclination": 0,
+      "raan": 0,
+      "argOfPeriapsis": 0
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#FFD700",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-inclined-1",
+    "name": "InclinaSat A",
+    "description": "Communications satellite in medium-inclination orbit. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 12000000,
+      "eccentricity": 0.1,
+      "inclination": 55,
+      "raan": 180,
+      "argOfPeriapsis": 90
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#FF4500",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-inclined-2",
+    "name": "InclinaSat B",
+    "description": "Another satellite in a shifted inclined orbit plane. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 11500000,
+      "eccentricity": 0.05,
+      "inclination": 40,
+      "raan": 75,
+      "argOfPeriapsis": 60
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#FF8C00",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-heo",
+    "name": "MolniyaSat",
+    "description": "HEO satellite with long dwell time over high latitudes. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 26600000,
+      "eccentricity": 0.74,
+      "inclination": 63.4,
+      "raan": 270,
+      "argOfPeriapsis": 270
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#9400D3",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  }
+]
