@@ -10,6 +10,14 @@ export interface Satellite {
   position: SampledPositionProperty;
   pathColor: string;
   model?: string; // Added model property for rendering
+  description?: string;
+  orbit?: {
+    semiMajorAxis?: number;
+    eccentricity?: number;
+    inclination?: number;
+    raan?: number;
+    argOfPeriapsis?: number;
+  };
 }
 
 interface SatelliteState {
@@ -51,7 +59,9 @@ const initializeStore = () => {
       frequencies: sat.frequencies,
       position: createSampledPosition(sat.orbit, JulianDate.now(),  1400),
       pathColor: sat.pathColor || "#00ffff",
-      model: sat.modelAssetId.toString()
+      model: sat.modelAssetId.toString(),
+      description: sat.description,
+      orbit: sat.orbit
     });
   });
   
