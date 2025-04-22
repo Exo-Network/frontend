@@ -31,6 +31,7 @@ const AddGroundStationDialog = () => {
     frequency: FrequencyType.S,
   });
 
+
   //   const toast = useToast();
   const [open, setOpen] = useState(false)
 
@@ -41,6 +42,32 @@ const AddGroundStationDialog = () => {
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        setFormData({
+          id: json.id,
+          name: json.name,
+          lat: json.lat.toString(),
+          lon: json.lon.toString(),
+          alt: (json.alt ?? 0).toString(),
+          owner: json.owner,
+          description: json.description,
+          frequency: json.frequencies?.[0] ?? FrequencyType.S,
+        });
+      } catch (err) {
+        console.error("Invalid JSON file.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
 
   const handleSubmit = () => {
     try {
@@ -76,10 +103,11 @@ const AddGroundStationDialog = () => {
             </Dialog.Header>
             <Dialog.Body>
               <Fieldset.Root size="lg" maxW="md">
-                <Stack>
-                  <Fieldset.Legend>Station details</Fieldset.Legend>
-                </Stack>
                 <Fieldset.Content>
+                  <Field.Root>
+                    <Field.Label>Import from file</Field.Label>
+                    <Input type="file" accept=".json" onChange={handleFileUpload} />
+                  </Field.Root>
                   <Field.Root>
                     <Field.Label>Name</Field.Label>
                     <Input

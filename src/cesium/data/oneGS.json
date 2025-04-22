@@ -1,0 +1,10 @@
+{
+  "id": "starbase-gs",
+  "name": "Starbase Ground Station",
+  "lat": 25.9972,
+  "lon": -97.1566,
+  "alt": 3,
+  "owner": "SpaceX",
+  "description": "Primary ground station located at Starbase, Texas",
+  "frequencies": ["Ka", "X"]
+}
