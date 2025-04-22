@@ -1,29 +1,15 @@
 import { Cartesian3, Color } from "cesium";
 import { Entity } from "resium";
-import stationData from "../data/groundStations.json";
-import { Key } from "react";
+import { useGroundStationStore, GroundStation } from "@/store/useGroundStationStore";
 
 export const GroundStations = () => {
+  const GroundStationsStore = Array.from(useGroundStationStore((state) => state.stations).values());
+
+  
   return (
     <>
-      {stationData.map(
-        (station: {
-          lon: number;
-          lat: number;
-          alt: number | undefined;
-          id: Key | null | undefined;
-          name: string | undefined;
-          color: string;
-          owner: any;
-          frequencies: any[];
-          costPerMb: number;
-          description: any;
-        }) => {
-          const position = Cartesian3.fromDegrees(
-            station.lon,
-            station.lat,
-            station.alt
-          );
+      {GroundStationsStore.map((station: GroundStation) => {
+          const position = station.position;
 
           return (
             <Entity

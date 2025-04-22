@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,22 +16,28 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           alignItems: "center",
         }}
       >
+                  <Link to="/" style={{ marginRight: 15, color: "white" }}>
+
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
             src="/exonet.svg"
             alt="ExoNet logo"
             style={{ height: 40, marginRight: 10 }}
           />
-          <h1 style={{ margin: 0, fontSize: "1.5rem" }}>ExoNet</h1>
+          <h1 style={{ margin: 0, fontSize: "1.5rem" }}>DecentSpace</h1>
+          
         </div>
-        <nav>
-          <Link to="/" style={{ marginRight: 15, color: "white" }}>
-            Home
+        </Link>
+       
+        <Flex gap={4}>
+          <Link to="/dashboard" style={{ marginRight: 15, color: "white" }}>
+            My Assets
           </Link>
           <Link to="/cesium" style={{ color: "white" }}>
             Viewer
           </Link>
-        </nav>
+        </Flex>
+        {/* </nav> */}
       </header>
       <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {children}

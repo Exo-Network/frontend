@@ -1,15 +1,11 @@
+import { useSatelliteStore } from "@/store/useSatelliteStore";
 import {
   Cartesian3,
-  Color,
-  JulianDate,
   Math as CesiumMath,
+  Color,
   Matrix3,
-  SampledPositionProperty,
-  IonResource,
 } from "cesium";
 import { Entity } from "resium";
-import { useEffect, useState } from "react";
-import satelliteData from "../data/satellites.json";
 
 type OrbitParams = {
   semiMajorAxis: number;
@@ -47,21 +43,6 @@ export const toECI = (angleDeg: number, orbit: OrbitParams): Cartesian3 => {
   return Matrix3.multiplyByVector(rotation, perifocal, new Cartesian3());
 };
 
-const createSampledPosition = (
-  orbit: OrbitParams,
-  start: JulianDate,
-  steps = 360
-): SampledPositionProperty => {
-  const position = new SampledPositionProperty();
-
-  for (let deg = 0; deg <= 360; deg += 360 / steps) {
-    const time = JulianDate.addSeconds(start, deg, new JulianDate());
-    const pos = toECI(deg, orbit);
-    position.addSample(time, pos);
-  }
-
-  return position;
-};
 
 const hexToCesiumColor = (hex: string): Color => {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -71,79 +52,33 @@ const hexToCesiumColor = (hex: string): Color => {
 };
 
 export const SatellitesEntities = () => {
-  const [entities, setEntities] = useState<any[]>([]);
-  const start = JulianDate.now();
+  const satellites = useSatelliteStore((state) => state.satellites);
 
-  useEffect(() => {
-    const loadSatellites = async () => {
-      const sats = await Promise.all(
-        satelliteData.map(async (sat) => {
-          const orbitParams: OrbitParams = {
-            semiMajorAxis: sat.orbit.semiMajorAxis,
-            eccentricity: sat.orbit.eccentricity,
-            inclination: CesiumMath.toRadians(sat.orbit.inclination),
-            raan: CesiumMath.toRadians(sat.orbit.raan),
-            argOfPeriapsis: CesiumMath.toRadians(sat.orbit.argOfPeriapsis),
-          };
-
-          const position = createSampledPosition(orbitParams, start);
-          const color = hexToCesiumColor(sat.pathColor || "#00ffff");
-          const resource = await IonResource.fromAssetId(sat.modelAssetId);
-
-          return {
-            id: sat.id,
-            name: sat.name,
-            position,
-            description: `
-              <div class="satellite-info">
-                <style>
-                  .satellite-info {
-                    color: black !important;
-                    background-color: white !important;
-                    font-family: sans-serif;
-                    font-size: 14px;
-                    line-height: 1.5;
-                  }
-                  .satellite-info strong {
-                    color: #111;
-                  }
-                </style>
-                <strong>${sat.name}</strong><br/>
-                Frequencies: ${sat.frequencies?.join(", ") ?? "N/A"}<br/>
-                ${sat.description}
-              </div>`,
-            path: {
-              resolution: 1,
-              material: color,
-              width: sat.pathWidth ?? 1,
-              leadTime: Number.POSITIVE_INFINITY,
-              trailTime: Number.POSITIVE_INFINITY,
-            },
-            model: {
-              uri: resource,
-              scale: sat.modelScale ?? 1,
-            },
-            point: {
-              pixelSize: 8,
-              color: Color.WHITE,
-              outlineColor: Color.BLACK,
-              outlineWidth: 1,
-            },
-          };
-        })
-      );
-
-      setEntities(sats);
-    };
-
-    loadSatellites();
-  }, []);
-
-  console.log("Satellites loaded:", entities);
   return (
     <>
-      {entities.map((props) => (
-        <Entity key={props.id} {...props} />
+      {Array.from(satellites.values()).map((sat) => (
+        <Entity
+          key={sat.id}
+          name={sat.name}
+          position={sat.position}
+          path={{
+            resolution: 1,
+            material: hexToCesiumColor(sat.pathColor),
+            width: 2,
+            leadTime: Number.POSITIVE_INFINITY,
+            trailTime: Number.POSITIVE_INFINITY,
+          }}
+          point={{
+            pixelSize: 8,
+            color: hexToCesiumColor(sat.pathColor),
+            outlineColor: Color.BLACK,
+            outlineWidth: 1,
+          }}
+          description={`<div style="color: black">
+            <strong>${sat.name}</strong><br/>
+            Frequencies: ${sat.frequencies.join(", ")}
+          </div>`}
+        />
       ))}
     </>
   );
