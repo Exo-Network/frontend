@@ -1,16 +1,6 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Tabs,
-  SimpleGrid,
-  Button,
-  Input,
-  Dialog,
-  Portal,
-} from "@chakra-ui/react";
-import SatelliteAssets from "./Components/SatelliteAssets";
+import { Box, Heading, Tabs } from "@chakra-ui/react";
 import GroundStationAssets from "./Components/GroundStationAssets";
+import SatelliteAssets from "./Components/SatelliteAssets";
 
 export const DashboardPage = () => {
   return (

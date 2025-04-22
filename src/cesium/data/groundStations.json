@@ -1,7 +1,7 @@
 [
   {
     "id": "gs-darmstadt",
-    "name": "Darmstadt Station",
+    "name": "Darmstadt",
     "description": "Main ESA control center.",
     "lat": 49.8708,
     "lon": 8.6512,
@@ -13,7 +13,7 @@
   },
   {
     "id": "gs-kourou",
-    "name": "Kourou Station",
+    "name": "Kourou",
     "description": "Launch site in French Guiana.",
     "lat": 5.236,
     "lon": -52.768,
@@ -25,7 +25,7 @@
   },
   {
     "id": "gs-norway",
-    "name": "Tromsø Ground Station",
+    "name": "Tromsø",
     "description": "Arctic satellite gateway in Norway.",
     "lat": 69.6496,
     "lon": 18.956,
@@ -37,7 +37,7 @@
   },
   {
     "id": "gs-australia",
-    "name": "Alice Springs Station",
+    "name": "Alice Springs",
     "description": "Ground station located in central Australia.",
     "lat": -23.698,
     "lon": 133.8807,
@@ -49,7 +49,7 @@
   },
   {
     "id": "gs-hawaii",
-    "name": "Hawaii Ground Station",
+    "name": "Hawaii",
     "description": "Mid-Pacific tracking station for various missions.",
     "lat": 21.3069,
     "lon": -157.8583,

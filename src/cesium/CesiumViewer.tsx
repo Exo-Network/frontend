@@ -7,7 +7,6 @@ import { SatellitesEntities } from "./utils/SatelliteLoader";
 export const CesiumViewer = () => {
   const offline = true;
   return (
-    <div style={{ height: "100%", width: "100%" }}>
       <Viewer style={{ height: "100%", width: "100%" }}>
         {offline && (
           <ImageryLayer
@@ -24,6 +23,5 @@ export const CesiumViewer = () => {
         <GroundStations />
         <SatellitesEntities />
       </Viewer>
-    </div>
   );
 };

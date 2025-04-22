@@ -9,7 +9,7 @@ export const GroundStations = () => {
   return (
     <>
       {GroundStationsStore.map((station: GroundStation) => {
-          const position = station.position;
+          const position = station.cartesianPosition;
 
           return (
             <Entity
