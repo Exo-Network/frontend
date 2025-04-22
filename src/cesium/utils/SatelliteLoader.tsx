@@ -1,10 +1,5 @@
 import { useSatelliteStore } from "@/store/useSatelliteStore";
-import {
-  Cartesian3,
-  Math as CesiumMath,
-  Color,
-  Matrix3,
-} from "cesium";
+import { Cartesian3, Math as CesiumMath, Color, Matrix3 } from "cesium";
 import { Entity } from "resium";
 
 type OrbitParams = {
@@ -43,8 +38,7 @@ export const toECI = (angleDeg: number, orbit: OrbitParams): Cartesian3 => {
   return Matrix3.multiplyByVector(rotation, perifocal, new Cartesian3());
 };
 
-
-const hexToCesiumColor = (hex: string): Color => {
+export const hexToCesiumColor = (hex: string): Color => {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
   const b = parseInt(hex.slice(5, 7), 16) / 255;
