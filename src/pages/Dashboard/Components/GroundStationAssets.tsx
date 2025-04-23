@@ -23,7 +23,7 @@ const GroundStationAssets = () => {
   );
 
   return (
-    <Flex direction="column" h="100vh">
+    <Flex direction="column">
       <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1">
         <Box w={{ base: "100%", md: "50%" }}>
           <AddGroundStationDialog />

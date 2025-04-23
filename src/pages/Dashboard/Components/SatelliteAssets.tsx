@@ -19,7 +19,7 @@ const SatelliteAssets = () => {
   );
 
   return (
-    <Flex direction="column" h="100vh">
+    <Flex direction="column" >
       <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1">
         <Box w={{ base: "100%", md: "50%" }}>
           <AddSatelliteDialog />
@@ -123,7 +123,7 @@ const SatelliteAssets = () => {
                   destination={Cartesian3.fromDegrees(
                     (selectedSatellite.orbit?.raan ?? 0) * 2,
                     (selectedSatellite.orbit?.inclination ?? 0) * 2,
-                    (selectedSatellite.orbit?.semiMajorAxis || 0) * 2
+                    (selectedSatellite.orbit?.semiMajorAxis || 0) * 3
                   )}
                 />
               )}
