@@ -1,8 +1,12 @@
-import { Box, Flex, Heading, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Image, Text, Button } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useWalletStore } from "../store/useWalletStore";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
+  const walletAddress = useWalletStore((s) => s.walletAddress);
+  const connectWallet = useWalletStore((s) => s.connectWallet);
+
   return (
     <Flex direction="column" minH="100vh">
       <Flex
@@ -48,6 +52,16 @@ export const Layout = ({ children }: { children: ReactNode }) => {
               Viewer
             </Text>
           </RouterLink>
+          <Button
+            colorScheme="teal"
+            variant="outline"
+            size="sm"
+            onClick={connectWallet}
+          >
+            {walletAddress
+              ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+              : "Connect Wallet"}
+          </Button>
         </HStack>
       </Flex>
 

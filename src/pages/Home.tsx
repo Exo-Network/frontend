@@ -7,8 +7,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { WalletButton } from "@/components/wallet/walletButton";
 
 export const Home = () => {
+
   return (
     <Box>
       {/* Hero Section */}
@@ -29,9 +31,7 @@ export const Home = () => {
             <Button colorScheme="blue" size="lg">
               Explore Demo
             </Button>
-            <Button variant="outline" size="lg">
-              Connect Wallet
-            </Button>
+            <WalletButton />
           </Stack>
         </Box>
         <Box flex="1" textAlign="center">
