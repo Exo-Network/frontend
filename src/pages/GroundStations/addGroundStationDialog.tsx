@@ -1,22 +1,20 @@
 import {
+  FrequencyType,
+  useGroundStationStore,
+} from "@/store/useGroundStationStore";
+import {
   Button,
   CloseButton,
   Dialog,
+  Field,
+  Fieldset,
   Flex,
   Input,
+  NativeSelect,
   Portal,
   Textarea,
-  useDisclosure,
-  Fieldset,
-  Field,
-  Stack,
-  NativeSelect,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import {
-  useGroundStationStore,
-  FrequencyType,
-} from "@/store/useGroundStationStore";
 
 const AddGroundStationDialog = () => {
   const createStation = useGroundStationStore((state) => state.createStation);
@@ -31,9 +29,8 @@ const AddGroundStationDialog = () => {
     frequency: FrequencyType.S,
   });
 
-
   //   const toast = useToast();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -67,7 +64,6 @@ const AddGroundStationDialog = () => {
     };
     reader.readAsText(file);
   };
-
 
   const handleSubmit = () => {
     try {
@@ -106,7 +102,11 @@ const AddGroundStationDialog = () => {
                 <Fieldset.Content>
                   <Field.Root>
                     <Field.Label>Import from file</Field.Label>
-                    <Input type="file" accept=".json" onChange={handleFileUpload} />
+                    <Input
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                    />
                   </Field.Root>
                   <Field.Root>
                     <Field.Label>Name</Field.Label>

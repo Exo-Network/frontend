@@ -12,7 +12,7 @@ import { WalletButton } from "@/components/wallet/walletButton";
 export const Home = () => {
 
   return (
-    <Box>
+    <Box >
       {/* Hero Section */}
       <Flex
         as="section"

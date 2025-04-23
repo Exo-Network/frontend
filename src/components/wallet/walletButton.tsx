@@ -1,5 +1,6 @@
 import { useWalletStore } from "@/store/useWalletStore";
 import {
+  Avatar,
   Button,
   CloseButton,
   Dialog,
@@ -46,7 +47,18 @@ export const WalletButton = () => {
   return (
     <Dialog.Root lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
       <Dialog.Trigger asChild>
-        <Button variant="outline" colorScheme="teal" size="sm">
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          maxW={"150px"}
+          alignItems="center"
+          justifyContent="start"
+          gap={6}
+        >
+          <Avatar.Root colorPalette="red" bgColor={"gray.700"} mx="-4">
+            <Avatar.Fallback />
+            <Avatar.Image src="https://bit.ly/broken-link" />
+          </Avatar.Root>
           My Account
         </Button>
       </Dialog.Trigger>
@@ -60,14 +72,14 @@ export const WalletButton = () => {
             <Dialog.Body>
               <VStack align="start" gap={3}>
                 <Text fontWeight="semibold">Address:</Text>
-                <Text wordBreak="break-word">{walletAddress}</Text>
+
                 <Link
                   href={`https://explorer.solana.com/address/${walletAddress}`}
                   color="blue.500"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View on Solana Explorer
+                  <Text wordBreak="break-word">{walletAddress}</Text>{" "}
                 </Link>
                 <Text fontWeight="semibold">
                   Balance:{" "}

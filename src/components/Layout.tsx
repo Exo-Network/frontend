@@ -1,12 +1,11 @@
-import { Box, Flex, Heading, HStack, Image, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Image, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useWalletStore } from "../store/useWalletStore";
+import { WalletButton } from "./wallet/walletButton";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const walletAddress = useWalletStore((s) => s.walletAddress);
-  const connectWallet = useWalletStore((s) => s.connectWallet);
-
+  const isLoggedIn = useWalletStore((state) => state.walletAddress) !== null;
   return (
     <Flex direction="column" minH="100vh">
       <Flex
@@ -28,44 +27,51 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </RouterLink>
 
         <HStack gap={4}>
-          <RouterLink
-            to="/dashboard"
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <Text
-              fontSize="md"
-              fontWeight="bold"
-              _hover={{ textDecoration: "underline" }}
-            >
-              My Assets
-            </Text>
-          </RouterLink>
-          <RouterLink
-            to="/cesium"
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <Text
-              fontSize="md"
-              fontWeight="bold"
-              _hover={{ textDecoration: "underline" }}
-            >
-              Viewer
-            </Text>
-          </RouterLink>
-          <Button
-            colorScheme="teal"
-            variant="outline"
-            size="sm"
-            onClick={connectWallet}
-          >
-            {walletAddress
-              ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
-              : "Connect Wallet"}
-          </Button>
+          {isLoggedIn && (
+            <>
+              <RouterLink
+                to="/spacecraft"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                <Text
+                  fontSize="md"
+                  fontWeight="bold"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Spacecraft
+                </Text>
+              </RouterLink>
+              <RouterLink
+                to="/ground-stations"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                <Text
+                  fontSize="md"
+                  fontWeight="bold"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Stations
+                </Text>
+              </RouterLink>
+              <RouterLink
+                to="/cesium"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                <Text
+                  fontSize="md"
+                  fontWeight="bold"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Analysis
+                </Text>
+              </RouterLink>
+            </>
+          )}
+          <WalletButton />
         </HStack>
       </Flex>
 
-      <Box as="main" flex="1" display="flex" flexDirection="column">
+      <Box as="main" flex="1" display="flex" flexDirection="column" bg={"gray.900"}>
         {children}
       </Box>
     </Flex>
