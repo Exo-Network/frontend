@@ -18,7 +18,7 @@
     "lat": 5.236,
     "lon": -52.768,
     "alt": 0,
-    "color": "#FFD700",
+    "color": "#00FF00",
     "owner": "CNES",
     "frequencies": ["UHF", "S-band"],
     "costPerMb": 0.07
@@ -30,7 +30,7 @@
     "lat": 69.6496,
     "lon": 18.956,
     "alt": 0,
-    "color": "#1E90FF",
+    "color": "#00FF00",
     "owner": "KSAT",
     "frequencies": ["S-band", "X-band"],
     "costPerMb": 0.08
@@ -42,7 +42,7 @@
     "lat": -23.698,
     "lon": 133.8807,
     "alt": 0,
-    "color": "#FFA07A",
+    "color": "#00FF00",
     "owner": "CSIRO",
     "frequencies": ["X-band", "Ka-band"],
     "costPerMb": 0.06
@@ -54,7 +54,7 @@
     "lat": 21.3069,
     "lon": -157.8583,
     "alt": 0,
-    "color": "#8A2BE2",
+    "color": "#00FF00",
     "owner": "NASA",
     "frequencies": ["S-band", "UHF"],
     "costPerMb": 0.09

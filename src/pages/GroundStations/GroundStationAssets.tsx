@@ -5,6 +5,8 @@ import {
   Flex,
   HStack,
   SimpleGrid,
+  Spacer,
+  Tag,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -45,6 +47,10 @@ const GroundStationAssets = () => {
                 }
                 onClick={() => setSelectedStation(station)}
               >
+                <Tag.Root size="sm" colorPalette={ station.onchain == true ? "green": "blue"} variant="solid">
+                  <Tag.Label>{ station.onchain == true ? "Onchain": "Locale"}</Tag.Label>
+                </Tag.Root>
+                <Spacer/>
                 {station.name}
               </Box>
             ))}

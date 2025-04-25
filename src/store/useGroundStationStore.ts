@@ -21,6 +21,7 @@ export interface Position {
 
 export interface GroundStation {
   id: string;
+  onchain:boolean;
   name: string;
   longitude: number;
   latitude: number;
@@ -72,6 +73,7 @@ export const useGroundStationStore = create<GroundStationState>((set, get) => ({
     );
     const newStation: GroundStation = {
       id: station.id,
+      onchain: false,
       name: station.name,
       longitude: station.lon,
       latitude: station.lat,
@@ -80,7 +82,7 @@ export const useGroundStationStore = create<GroundStationState>((set, get) => ({
         (frequency) => frequency as FrequencyType
       ),
       cartesianPosition,
-      color: station.color,
+      color: "#1E90FF",
       owner: station.owner,
       costPerMb: station.costPerMb,
       description: station.description,
@@ -104,6 +106,7 @@ const initializeStore = () => {
 
     stations.set(station.id, {
       id: station.id,
+      onchain: true,
       name: station.name,
       longitude: station.lon,
       latitude: station.lat,

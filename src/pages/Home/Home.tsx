@@ -7,12 +7,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { WalletButton } from "@/components/wallet/walletButton";
+import LoginDialog from "./Component/LoginDialog";
 
 export const Home = () => {
 
   return (
     <Box >
+      <LoginDialog />
       {/* Hero Section */}
       <Flex
         as="section"
@@ -31,7 +32,6 @@ export const Home = () => {
             <Button colorScheme="blue" size="lg">
               Explore Demo
             </Button>
-            <WalletButton />
           </Stack>
         </Box>
         <Box flex="1" textAlign="center">
