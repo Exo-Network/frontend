@@ -1,8 +1,6 @@
-import { useUxStore } from "@/store/useUxStore";
-import { useWalletStore } from "@/store/useWalletStore";
-import { Button, Flex, Heading, HStack, Image, Spacer } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import UserMenu from "./Components/UserMenu";
+import { Flex, Heading, HStack, Image, Spacer } from "@chakra-ui/react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import UserMenu from "./Components/UserMenu/UserMenu";
 
 export const SIDEBAR = {
   EXPANDED_WIDTH: 280,
@@ -10,9 +8,22 @@ export const SIDEBAR = {
 };
 
 const TopBar = () => {
-  const address = useWalletStore((state) => state.walletAddress);
-  const isLoggedIn = address !== null;
-  const setLoginDialogOpen = useUxStore((state) => state.setLoginDialogOpen);
+  const location = useLocation();
+
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case "/spacecraft":
+        return "Spacecrafts";
+      case "/ground-stations":
+        return "Ground Stations";
+      case "/account":
+        return "Account";
+      case "/cesium":
+        return "Cesium";
+      default:
+        return "";
+    }
+  };
 
   return (
     <Flex
@@ -34,17 +45,17 @@ const TopBar = () => {
           <HStack gap={3}>
             <Image src="/exonet.svg" alt="ExoNet logo" h="40px" />
             <Heading size="md" m={0}>
-              DecentSpace
+              ExoNet
             </Heading>
           </HStack>
         </RouterLink>
       </Flex>
       <Spacer w="full" />
-      {isLoggedIn ? (
-        <UserMenu />
-      ) : (
-        <Button onClick={()=>setLoginDialogOpen(true)}>Login</Button>
-      )}
+      <Heading size="3xl" color="white" textAlign="center" flexShrink={0}>
+        {getPageTitle()}
+      </Heading>
+      <Spacer w="full" />
+      <UserMenu />
     </Flex>
   );
 };

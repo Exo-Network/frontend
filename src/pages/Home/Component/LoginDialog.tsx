@@ -7,6 +7,7 @@ import {
   Portal,
   Spinner,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -43,12 +44,14 @@ const LoginDialog = () => {
             <Dialog.Header>
               <Dialog.Title>Login</Dialog.Title>
             </Dialog.Header>
-            <Dialog.Body>
+            <Dialog.Body justifyContent={'center'}>
               {/* //Spinne when loading */}
               <Text fontSize="lg" mb={4}>
                 Connect your wallet to access the full features of the app.
               </Text>
-              {isloading && <Spinner size="lg" color="purple.500" />}
+              <Flex justify='center'>
+              {isloading && <Spinner size="xl" color="purple.500" />}
+              </Flex>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>

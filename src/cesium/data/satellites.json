@@ -21,7 +21,7 @@
     "name": "EquaCom",
     "description": "Geostationary satellite in equatorial orbit. Frequencies: S-band, X-band.",
     "orbit": {
-      "semiMajorAxis": 42164000,
+      "semiMajorAxis": 22164000,
       "eccentricity": 0.0,
       "inclination": 0,
       "raan": 0,
@@ -38,8 +38,8 @@
     "name": "MolniyaSat",
     "description": "HEO satellite with long dwell time over high latitudes. Frequencies: S-band, X-band.",
     "orbit": {
-      "semiMajorAxis": 26600000,
-      "eccentricity": 0.74,
+      "semiMajorAxis": 20600000,
+      "eccentricity": 0.14,
       "inclination": 63.4,
       "raan": 270,
       "argOfPeriapsis": 270

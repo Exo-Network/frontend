@@ -55,6 +55,6 @@ export const createSampledPosition = (
       interpolationAlgorithm: LagrangePolynomialApproximation,
     });
   }
-
+console.log("position", position);
   return position;
 };

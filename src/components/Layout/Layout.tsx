@@ -24,7 +24,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         flexDirection="column"
         bg={"gray.900"}
       >
-        {children}
+          {children}
       </Box>
     </Flex>
   );
