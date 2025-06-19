@@ -17,6 +17,40 @@
     "frequencies": ["S-band", "X-band"]
   },
   {
+    "id": "exo-inclined-2",
+    "name": "InclinaSat B",
+    "description": "Formation satellite B, flying 5km ahead of InclinaSat A. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 12000000,
+      "eccentricity": 0.1,
+      "inclination": 55,
+      "raan": 180,
+      "argOfPeriapsis": 90.5
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#FF6347",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "exo-inclined-3",
+    "name": "InclinaSat C",
+    "description": "Formation satellite C, flying 5km behind InclinaSat A. Frequencies: S-band, X-band.",
+    "orbit": {
+      "semiMajorAxis": 12000000,
+      "eccentricity": 0.1,
+      "inclination": 55,
+      "raan": 180,
+      "argOfPeriapsis": 89.5
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#FF8C00",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
     "id": "exo-equatorial",
     "name": "EquaCom",
     "description": "Geostationary satellite in equatorial orbit. Frequencies: S-band, X-band.",
