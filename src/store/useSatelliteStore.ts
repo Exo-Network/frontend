@@ -12,6 +12,8 @@ export interface Satellite {
   model?: string; // Added model property for rendering
   modelScale?: number; // Added modelScale property
   description?: string;
+  isMaster?: boolean;
+  masterRange: number;
   orbit?: {
     semiMajorAxis?: number;
     eccentricity?: number;
@@ -23,12 +25,14 @@ export interface Satellite {
 
 interface SatelliteState {
   satellites: Map<string, Satellite>;
+  selectedSatelliteId: string | null;
   getSatellite: (id: string) => Satellite | undefined;
   getAllSatellites: () => Satellite[];
   updateSatellitePosition: (
     id: string,
     position: SampledPositionProperty
   ) => void;
+  setSelectedSatellite: (id: string | null) => void;
   createSatellite: (sat: {
     id: string;
     name: string;
@@ -44,11 +48,14 @@ interface SatelliteState {
     model?: string;
     modelScale?: number;
     description?: string;
+    isMaster?: boolean;
+    masterRange?: number;
   }) => void;
 }
 
 export const useSatelliteStore = create<SatelliteState>((set, get) => ({
   satellites: new Map(),
+  selectedSatelliteId: null,
 
   getSatellite: (id: string) => {
     return get().satellites.get(id);
@@ -65,6 +72,10 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
       updatedSatellites.set(id, { ...satellite, position });
       set({ satellites: updatedSatellites });
     }
+  },
+
+  setSelectedSatellite: (id: string | null) => {
+    set({ selectedSatelliteId: id });
   },
 
   createSatellite: (sat) => {
@@ -84,8 +95,10 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
       pathColor: sat.pathColor || "#00ffff",
       model: sat.model,
       description: sat.description,
+      isMaster: sat.isMaster,
+      masterRange: sat.masterRange || 0,
       position,
-      modelScale: sat.modelScale || 1000,
+      modelScale: sat.modelScale || 10000,
     };
     const updatedSatellites = new Map(get().satellites);
     updatedSatellites.set(sat.id, newSatellite);
@@ -106,8 +119,10 @@ const initializeStore = () => {
       pathColor: sat.pathColor || "#00ffff",
       model: sat.modelAssetId.toString(),
       description: sat.description,
+      isMaster: sat.isMaster,
+      masterRange: sat.masterRange || 0,
       orbit: sat.orbit,
-      modelScale: sat.modelScale || 1000,
+      modelScale: sat.modelScale || 10000,
     });
   });
 

@@ -2,7 +2,9 @@
   {
     "id": "exo-inclined-1",
     "name": "InclinaSat A",
-    "description": "Communications satellite in medium-inclination orbit. Frequencies: S-band, X-band.",
+    "description": "Leading the formation with precision navigation and advanced communication capabilities.",
+    "isMaster": true,
+    "masterRange": 1000000,
     "orbit": {
       "semiMajorAxis": 12000000,
       "eccentricity": 0.1,
@@ -19,9 +21,11 @@
   {
     "id": "exo-inclined-2",
     "name": "InclinaSat B",
-    "description": "Formation satellite B, flying 5km ahead of InclinaSat A. Frequencies: S-band, X-band.",
+    "description": "Formation satellite maintaining optimal spacing with synchronized orbital maneuvers.",
+    "isMaster": false,
+    "masterRange": 0,
     "orbit": {
-      "semiMajorAxis": 12000000,
+      "semiMajorAxis": 12000200,
       "eccentricity": 0.1,
       "inclination": 55,
       "raan": 180,
@@ -36,9 +40,11 @@
   {
     "id": "exo-inclined-3",
     "name": "InclinaSat C",
-    "description": "Formation satellite C, flying 5km behind InclinaSat A. Frequencies: S-band, X-band.",
+    "description": "Formation satellite providing redundancy and enhanced coverage patterns.",
+    "isMaster": false,
+    "masterRange": 0,
     "orbit": {
-      "semiMajorAxis": 12000000,
+      "semiMajorAxis": 11999800,
       "eccentricity": 0.1,
       "inclination": 55,
       "raan": 180,
@@ -53,7 +59,9 @@
   {
     "id": "exo-equatorial",
     "name": "EquaCom",
-    "description": "Geostationary satellite in equatorial orbit. Frequencies: S-band, X-band.",
+    "description": "Geostationary communications hub providing continuous global coverage from 36,000km altitude.",
+    "isMaster": false,
+    "masterRange": 0,
     "orbit": {
       "semiMajorAxis": 22164000,
       "eccentricity": 0.0,
@@ -70,7 +78,9 @@
   {
     "id": "exo-heo",
     "name": "MolniyaSat",
-    "description": "HEO satellite with long dwell time over high latitudes. Frequencies: S-band, X-band.",
+    "description": "High-eccentricity orbit specialist delivering extended coverage over polar regions.",
+    "isMaster": false,
+    "masterRange": 0,
     "orbit": {
       "semiMajorAxis": 20600000,
       "eccentricity": 0.14,

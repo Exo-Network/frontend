@@ -2,6 +2,7 @@
   "id": "exo-polar-1",
   "name": "Polar Sentinel 1",
   "description": "Low Earth observation satellite in polar orbit. Frequencies: S-band, X-band.",
+  "isMaster": true,
   "orbit": {
     "semiMajorAxis": 7200000,
     "eccentricity": 0.01,
