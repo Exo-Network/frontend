@@ -10,6 +10,7 @@ export interface Satellite {
   position: SampledPositionProperty;
   pathColor: string;
   model?: string; // Added model property for rendering
+  modelScale?: number; // Added modelScale property
   description?: string;
   orbit?: {
     semiMajorAxis?: number;
@@ -41,6 +42,7 @@ interface SatelliteState {
     frequencies: string[];
     pathColor?: string;
     model?: string;
+    modelScale?: number;
     description?: string;
   }) => void;
 }
@@ -83,6 +85,7 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
       model: sat.model,
       description: sat.description,
       position,
+      modelScale: sat.modelScale || 1000,
     };
     const updatedSatellites = new Map(get().satellites);
     updatedSatellites.set(sat.id, newSatellite);
@@ -104,6 +107,7 @@ const initializeStore = () => {
       model: sat.modelAssetId.toString(),
       description: sat.description,
       orbit: sat.orbit,
+      modelScale: sat.modelScale || 1000,
     });
   });
 

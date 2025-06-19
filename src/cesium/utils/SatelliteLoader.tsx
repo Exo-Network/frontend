@@ -68,6 +68,12 @@ export const SatellitesEntities = () => {
             outlineColor: Color.BLACK,
             outlineWidth: 1,
           }}
+          {...(sat.model && {
+            model: {
+              uri: "/models/Sentinel-6.glb",
+              scale: sat.modelScale || 1000,
+            }
+          })}
           description={`<div style="color: black">
             <strong>${sat.name}</strong><br/>
             Frequencies: ${sat.frequencies.join(", ")}
