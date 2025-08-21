@@ -26,7 +26,7 @@ const SatelliteList = ({ selectedSatellite, setSelectedSatellite }: {
       borderWidth="1px"
       borderRadius="md"
       p={4}
-      maxH="85vh"
+      h="full"
       display="flex"
       flexDirection="column"
     >
@@ -82,18 +82,19 @@ const SatelliteDetails = ({ selectedSatellite }: { selectedSatellite: Satellite 
       display="grid"
       gridTemplateColumns="1fr 1fr"
       gap={4}
-      maxH="85vh"
-      overflowY="auto"
+      h="full"
+      overflow="hidden"
+      maxH="full"
     >
-      <Box>
+      <Box w="full" h="full" p={4} overflow="auto" maxH="full">
         {currentSatellite ? (
-          <VStack align="start" gap={4}>
-            <HStack justify="space-between" w="100%" align="start">
-              <VStack align="start" flex="1">
-                <Text fontWeight="bold" fontSize="xl" mb={2}>
+          <VStack align="start" gap={1} w="full">
+            <HStack justify="space-between" w="full">
+              <VStack align="start" flex="1" gap={1}>
+                <Text fontWeight="bold" fontSize="xl">
                   {currentSatellite.name}
                 </Text>
-                <Text mb={2}>
+                <Text fontSize="sm" color="gray.300">
                   {currentSatellite.description ?? "No description available."}
                 </Text>
               </VStack>
@@ -112,41 +113,27 @@ const SatelliteDetails = ({ selectedSatellite }: { selectedSatellite: Satellite 
                 <FaCog size="16px" />
               </Button>
             </HStack>
-            <Text fontWeight="semibold">Orbit Parameters:</Text>
-            <Text>
-              • Semi-major axis: {currentSatellite.orbit?.semiMajorAxis ?? "N/A"} m
-            </Text>
-            <Text>
-              • Eccentricity: {currentSatellite.orbit?.eccentricity ?? "N/A"}
-            </Text>
-            <Text>
-              • Inclination: {currentSatellite.orbit?.inclination ?? "N/A"}°
-            </Text>
-            <Text>• RAAN: {currentSatellite.orbit?.raan ?? "N/A"}°</Text>
-            <Text>
-              • Argument of Periapsis: {currentSatellite.orbit?.argOfPeriapsis ?? "N/A"}°
-            </Text>
-            <Text fontWeight="semibold" mt={4}>
-              Frequencies:
-            </Text>
-            <Text>
-              {currentSatellite.frequencies?.join(", ") ?? "N/A"}
-            </Text>
-            <Text fontWeight="semibold" mt={4}>
-              Additional Properties:
-            </Text>
-            <Text>• Path Color: {currentSatellite.pathColor}</Text>
-            <Text>• Model Scale: {currentSatellite.modelScale}</Text>
-            <Text>• Master Range: {currentSatellite.masterRange} m</Text>
-            <Text>• Is Master: {currentSatellite.isMaster ? "Yes" : "No"}</Text>
+            <Text fontWeight="semibold" mt={1}>Orbit Parameters:</Text>
+            <Text fontSize="sm">• Semi-major axis: {currentSatellite.orbit?.semiMajorAxis ?? "N/A"} m</Text>
+            <Text fontSize="sm">• Eccentricity: {currentSatellite.orbit?.eccentricity ?? "N/A"}</Text>
+            <Text fontSize="sm">• Inclination: {currentSatellite.orbit?.inclination ?? "N/A"}°</Text>
+            <Text fontSize="sm">• RAAN: {currentSatellite.orbit?.raan ?? "N/A"}°</Text>
+            <Text fontSize="sm">• Argument of Periapsis: {currentSatellite.orbit?.argOfPeriapsis ?? "N/A"}°</Text>
+            <Text fontWeight="semibold" mt={1}>Frequencies:</Text>
+            <Text fontSize="sm">{currentSatellite.frequencies?.join(", ") ?? "N/A"}</Text>
+            <Text fontWeight="semibold" mt={1}>Additional Properties:</Text>
+            <Text fontSize="sm">• Path Color: {currentSatellite.pathColor}</Text>
+            <Text fontSize="sm">• Model Scale: {currentSatellite.modelScale}</Text>
+            <Text fontSize="sm">• Master Range: {currentSatellite.masterRange} m</Text>
+            <Text fontSize="sm">• Is Master: {currentSatellite.isMaster ? "Yes" : "No"}</Text>
           </VStack>
         ) : (
           <Text>No satellite selected</Text>
         )}
       </Box>
-      <Box>
+      <Box borderRadius={"xl"} overflow="hidden" h="full" maxH="full">
         <Viewer
-          style={{ height: "400px", width: "100%" }}
+          style={{ height: "100%", width: "100%" }}
           timeline={false}
           animation={false}
           navigationHelpButton={false}
@@ -219,8 +206,8 @@ const SatelliteAssets = () => {
   );
 
   return (
-    <Flex direction="column">
-      <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1">
+    <Flex direction="column" h="full" overflow="hidden">
+      <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1" h="full" overflow="hidden">
         <SatelliteList
           selectedSatellite={selectedSatellite}
           setSelectedSatellite={setSelectedSatellite}

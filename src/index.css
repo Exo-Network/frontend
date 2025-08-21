@@ -28,3 +28,10 @@ a {
 a:hover {
   color: #90cdf4;
 }
+
+/* Hide Cesium watermark/credits */
+.cesium-widget-credits,
+.cesium-credit-textContainer,
+.cesium-credit-logoContainer {
+  display: none !important;
+}

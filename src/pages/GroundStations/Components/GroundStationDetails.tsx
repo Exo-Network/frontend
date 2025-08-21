@@ -38,13 +38,16 @@ const GroundStationDetails = ({
       gridTemplateColumns="1fr 1fr"
       gap={4}
     >
-      <Box w="full" h="full" borderWidth="1px" borderRadius="md" p={4}>
+      <Box w="full" h="full" p={4}>
         {selectedStation ? (
-          <VStack align="start" gap={4} w="full">
+          <VStack align="start" gap={1} w="full">
             <HStack justify="space-between" w="full">
-              <VStack align="start" flex="1">
-                <Text fontWeight="bold" fontSize="xl" mb={2}>
+              <VStack align="start" flex="1" gap={1}>
+                <Text fontWeight="bold" fontSize="xl">
                   {selectedStation.name}
+                </Text>
+                <Text fontSize="sm" color="gray.300">
+                  {selectedStation.description}
                 </Text>
               </VStack>
               <Button
@@ -63,37 +66,26 @@ const GroundStationDetails = ({
               </Button>
             </HStack>
 
-            <Text mb={2}>{selectedStation.description}</Text>
-            <Text>
-              <strong>Owner:</strong> {selectedStation.owner}
-            </Text>
-            <Text>
-              <strong>Frequencies:</strong>{" "}
-              {selectedStation.frequencies.join(", ")}
-            </Text>
-            <Text>
-              <strong>Cost per MB:</strong> $
-              {selectedStation.costPerMb.toFixed(2)}
-            </Text>
-            <Text>
-              <strong>On-chain:</strong> {selectedStation.onchain ? "Yes" : "No"}
-            </Text>
-            <Flex>
-              <Text>Position:</Text>
-              <VStack ml={2} gap={0} align={"start"}>
-                <Text>Latitude: {selectedStation.latitude}</Text>
-                <Text>Longitude: {selectedStation.longitude}</Text>
-                <Text>Altitude: {selectedStation.altitude}</Text>
-              </VStack>
-            </Flex>
+            <Text fontWeight="semibold" mt={1}>Owner:</Text>
+            <Text fontSize="sm">{selectedStation.owner}</Text>
+            <Text fontWeight="semibold" mt={1}>Frequencies:</Text>
+            <Text fontSize="sm">{selectedStation.frequencies.join(", ")}</Text>
+            <Text fontWeight="semibold" mt={1}>Cost per MB:</Text>
+            <Text fontSize="sm">${selectedStation.costPerMb.toFixed(2)}</Text>
+            <Text fontWeight="semibold" mt={1}>Position:</Text>
+            <VStack gap={0} align="start">
+              <Text fontSize="sm">Latitude: {selectedStation.latitude}</Text>
+              <Text fontSize="sm">Longitude: {selectedStation.longitude}</Text>
+              <Text fontSize="sm">Altitude: {selectedStation.altitude}</Text>
+            </VStack>
           </VStack>
         ) : (
           <Text>No station selected</Text>
         )}
       </Box>
-      <Box borderRadius={"xl"} overflow="hidden">
+      <Box borderRadius={"xl"} overflow="hidden" h="full">
         <Viewer
-          style={{ height: "400px", width: "100%" }}
+          style={{ height: "100%", width: "100%" }}
           timeline={false}
           animation={false}
           navigationHelpButton={false}

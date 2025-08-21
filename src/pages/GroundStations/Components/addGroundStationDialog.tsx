@@ -15,6 +15,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 
 const AddGroundStationDialog = () => {
   const createStation = useGroundStationStore((state) => state.createStation);
@@ -87,7 +88,19 @@ const AddGroundStationDialog = () => {
     <Dialog.Root lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
       <Flex justify="flex-end" mb={4}>
         <Dialog.Trigger asChild>
-          <Button colorScheme="green">+ Add Ground Station</Button>
+          <Button 
+            colorScheme="green" 
+            size="md" 
+            variant="solid"
+            px={4}
+            py={2}
+            borderRadius="md"
+            boxShadow="md"
+            _hover={{ bg: "green.600", transform: "scale(1.05)" }}
+            transition="all 0.2s ease"
+          >
+            <FaPlus size="16px" />
+          </Button>
         </Dialog.Trigger>
       </Flex>
       <Portal>

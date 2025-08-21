@@ -10,9 +10,9 @@ export const GroundStationPage = () => {
   );
   const [selectedStation, setSelectedStation] = useState(groundStations[0]);
   return (
-    <Box p={6}>
-      <Flex direction="column">
-        <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1">
+    <Box p={4} h="calc(100vh - 80px)" overflow="hidden" maxH="calc(100vh - 80px)">
+      <Flex direction="column" h="full" overflow="hidden">
+        <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1" h="full" overflow="hidden">
           <GroundStationList
             selectedStation={selectedStation}
             setSelectedStation={setSelectedStation}
