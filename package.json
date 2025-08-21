@@ -20,6 +20,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.5.0",
     "resium": "^1.19.0-beta.1",
+    "snake-eater-ui": "file:../snake-eater-ui",
     "vite-plugin-cesium": "^1.2.23",
     "zustand": "^5.0.3"
   },

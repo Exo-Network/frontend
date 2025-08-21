@@ -19,11 +19,17 @@ const config = defineConfig({
           950: { value: "#001a33" },
         },
         red: { value: "#EE0F0F" },
+        text: { value: "white" },
+        textSecondary: { value: "#B7C9EF" },
+        background: { value: "#1a202c" },
       },
     },
     semanticTokens: {
       colors: {
         danger: { value: "{colors.red}" },
+        text: { value: "{colors.text}" },
+        textSecondary: { value: "{colors.textSecondary}" },
+        background: { value: "{colors.background}" },
       },
     },
     keyframes: {

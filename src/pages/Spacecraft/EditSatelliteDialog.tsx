@@ -11,14 +11,18 @@ import {
   Stack,
   NativeSelect,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FrequencyType } from "@/store/useGroundStationStore";
-import { useSatelliteStore } from "@/store/useSatelliteStore";
-import { FaPlus } from "react-icons/fa";
+import { useSatelliteStore, Satellite } from "@/store/useSatelliteStore";
 
-const AddSatelliteDialog = () => {
-  const [open, setOpen] = useState(false)
-  const createSatellite = useSatelliteStore((state) => state.createSatellite);
+interface EditSatelliteDialogProps {
+  satellite: Satellite;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialogProps) => {
+  const updateSatellite = useSatelliteStore((state) => state.updateSatellite);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -29,46 +33,50 @@ const AddSatelliteDialog = () => {
     argOfPeriapsis: "",
     frequencies: FrequencyType.S,
     description: "",
+    pathColor: "",
+    modelScale: "",
+    isMaster: false,
+    masterRange: "",
   });
+
+  // Update form data when satellite prop changes
+  useEffect(() => {
+    if (satellite) {
+      setFormData({
+        id: satellite.id,
+        name: satellite.name,
+        semiMajorAxis: satellite.orbit?.semiMajorAxis?.toString() ?? "",
+        eccentricity: satellite.orbit?.eccentricity?.toString() ?? "",
+        inclination: satellite.orbit?.inclination?.toString() ?? "",
+        raan: satellite.orbit?.raan?.toString() ?? "",
+        argOfPeriapsis: satellite.orbit?.argOfPeriapsis?.toString() ?? "",
+        frequencies: satellite.frequencies?.[0] ?? FrequencyType.S,
+        description: satellite.description ?? "",
+        pathColor: satellite.pathColor ?? "#00ffff",
+        modelScale: satellite.modelScale?.toString() ?? "10000",
+        isMaster: satellite.isMaster ?? false,
+        masterRange: satellite.masterRange?.toString() ?? "0",
+      });
+    }
+  }, [satellite]);
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const json = JSON.parse(event.target?.result as string);
-        setFormData({
-          id: json.id,
-          name: json.name,
-          semiMajorAxis: json.orbit?.semiMajorAxis?.toString() ?? "",
-          eccentricity: json.orbit?.eccentricity?.toString() ?? "",
-          inclination: json.orbit?.inclination?.toString() ?? "",
-          raan: json.orbit?.raan?.toString() ?? "",
-          argOfPeriapsis: json.orbit?.argOfPeriapsis?.toString() ?? "",
-          frequencies: json.frequencies?.[0] ?? FrequencyType.S,
-          description: json.description ?? "",
-        });
-      } catch (err) {
-        console.error("Invalid JSON file.");
-      }
-    };
-    reader.readAsText(file);
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = () => {
     try {
-      createSatellite({
-        id: formData.id || crypto.randomUUID(),
+      updateSatellite(satellite.id, {
         name: formData.name,
         orbit: {
           semiMajorAxis: parseFloat(formData.semiMajorAxis) || 0,
@@ -79,30 +87,19 @@ const AddSatelliteDialog = () => {
         },
         frequencies: [formData.frequencies],
         description: formData.description,
+        pathColor: formData.pathColor,
+        modelScale: parseFloat(formData.modelScale) || 10000,
+        isMaster: formData.isMaster,
+        masterRange: parseFloat(formData.masterRange) || 0,
       });
-      setOpen(false);
-    } catch (err) {}
+      onClose();
+    } catch (err) {
+      console.error("Error updating satellite:", err);
+    }
   };
 
   return (
-    <Dialog.Root lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
-      <Flex justify="flex-end" mb={4}>
-        <Dialog.Trigger asChild>
-          <Button 
-            colorScheme="green" 
-            size="md" 
-            variant="solid"
-            px={4}
-            py={2}
-            borderRadius="md"
-            boxShadow="md"
-            _hover={{ bg: "green.600", transform: "scale(1.05)" }}
-            transition="all 0.2s ease"
-          >
-            <FaPlus size="16px" />
-          </Button>
-        </Dialog.Trigger>
-      </Flex>
+    <Dialog.Root lazyMount open={isOpen} onOpenChange={(e) => onClose()}>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
@@ -122,31 +119,16 @@ const AddSatelliteDialog = () => {
               py={4}
             >
               <Dialog.Title color="white" fontSize="xl" fontWeight="semibold">
-                Create Satellite
+                Edit Satellite: {satellite.name}
               </Dialog.Title>
               <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" color="white" />
+                <CloseButton size="sm" color="white" onClick={onClose} />
               </Dialog.CloseTrigger>
             </Dialog.Header>
             <Dialog.Body bg="gray.800" px={6} py={4}>
               <Fieldset.Root size="lg" maxW="md">
                 <Fieldset.Content>
                   <Stack gap={4}>
-                    <Field.Root>
-                      <Field.Label color="white" fontWeight="medium">
-                        Import from file
-                      </Field.Label>
-                      <Input 
-                        type="file" 
-                        accept=".json" 
-                        onChange={handleFileUpload}
-                        bg="gray.700"
-                        borderColor="gray.500"
-                        color="white"
-                        _hover={{ borderColor: "gray.400" }}
-                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
-                      />
-                    </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
                         Name
@@ -165,7 +147,7 @@ const AddSatelliteDialog = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        Semi-Major Axis
+                        Semi-Major Axis (m)
                       </Field.Label>
                       <Input
                         name="semiMajorAxis"
@@ -197,7 +179,7 @@ const AddSatelliteDialog = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        Inclination
+                        Inclination (°)
                       </Field.Label>
                       <Input
                         name="inclination"
@@ -213,7 +195,7 @@ const AddSatelliteDialog = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        RAAN
+                        RAAN (°)
                       </Field.Label>
                       <Input
                         name="raan"
@@ -229,7 +211,7 @@ const AddSatelliteDialog = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        Argument of Periapsis
+                        Argument of Periapsis (°)
                       </Field.Label>
                       <Input
                         name="argOfPeriapsis"
@@ -269,6 +251,55 @@ const AddSatelliteDialog = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
+                        Path Color
+                      </Field.Label>
+                      <Input
+                        name="pathColor"
+                        type="color"
+                        value={formData.pathColor}
+                        onChange={handleChange}
+                        bg="gray.700"
+                        borderColor="gray.500"
+                        color="white"
+                        _hover={{ borderColor: "gray.400" }}
+                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
+                        h="40px"
+                      />
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label color="white" fontWeight="medium">
+                        Model Scale
+                      </Field.Label>
+                      <Input
+                        name="modelScale"
+                        value={formData.modelScale}
+                        onChange={handleChange}
+                        bg="gray.700"
+                        borderColor="gray.500"
+                        color="white"
+                        _hover={{ borderColor: "gray.400" }}
+                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
+                        _placeholder={{ color: "gray.400" }}
+                      />
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label color="white" fontWeight="medium">
+                        Master Range (m)
+                      </Field.Label>
+                      <Input
+                        name="masterRange"
+                        value={formData.masterRange}
+                        onChange={handleChange}
+                        bg="gray.700"
+                        borderColor="gray.500"
+                        color="white"
+                        _hover={{ borderColor: "gray.400" }}
+                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
+                        _placeholder={{ color: "gray.400" }}
+                      />
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label color="white" fontWeight="medium">
                         Description
                       </Field.Label>
                       <Textarea
@@ -295,13 +326,11 @@ const AddSatelliteDialog = () => {
               px={6}
               py={4}
             >
-              <Dialog.ActionTrigger asChild>
-                <Button variant="outline" color="white" borderColor="gray.500" _hover={{ bg: "gray.600" }}>
-                  Cancel
-                </Button>
-              </Dialog.ActionTrigger>
+              <Button variant="outline" color="white" borderColor="gray.500" _hover={{ bg: "gray.600" }} onClick={onClose}>
+                Cancel
+              </Button>
               <Button colorScheme="green" onClick={handleSubmit} ml={3}>
-                Save
+                Save Changes
               </Button>
             </Dialog.Footer>
           </Dialog.Content>
@@ -311,4 +340,4 @@ const AddSatelliteDialog = () => {
   );
 };
 
-export default AddSatelliteDialog;
+export default EditSatelliteDialog;

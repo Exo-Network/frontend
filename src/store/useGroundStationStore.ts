@@ -38,6 +38,7 @@ interface GroundStationState {
   stations: Map<string, GroundStation>;
   getStation: (id: string) => GroundStation | undefined;
   getAllStations: () => GroundStation[];
+  updateStation: (id: string, updates: Partial<GroundStation>) => void;
   createStation: (
     station: {
       id: string;
@@ -63,6 +64,16 @@ export const useGroundStationStore = create<GroundStationState>((set, get) => ({
 
   getAllStations: () => {
     return Array.from(get().stations.values());
+  },
+
+  updateStation: (id: string, updates: Partial<GroundStation>) => {
+    const station = get().stations.get(id);
+    if (station) {
+      const updatedStation = { ...station, ...updates };
+      const updatedStations = new Map(get().stations);
+      updatedStations.set(id, updatedStation);
+      set({ stations: updatedStations });
+    }
   },
 
   createStation: (station) => {

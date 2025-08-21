@@ -1,0 +1,30 @@
+/* Essential reset styles for ExoNet */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a202c;
+  color: white;
+}
+
+/* Ensure all text elements have white color by default for dark theme */
+h1, h2, h3, h4, h5, h6, p, span, div, label, input, textarea, select, button {
+  color: white;
+}
+
+/* Override for specific elements that need different colors */
+input::placeholder, textarea::placeholder {
+  color: #a0aec0;
+}
+
+/* Ensure links are visible */
+a {
+  color: #63b3ed;
+}
+
+a:hover {
+  color: #90cdf4;
+}

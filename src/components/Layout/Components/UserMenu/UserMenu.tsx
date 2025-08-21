@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import UserMenuItem from "./UserMenuItem";
 
 const UserMenu = () => {
-  const address = useWalletStore((state) => state.walletAddress) || "";
   const disconnectWallet = useWalletStore((s) => s.disconnectWallet);
   const navigate = useNavigate();
   const logout = () => {
@@ -31,14 +30,12 @@ const UserMenu = () => {
           <Flex
             align="center"
             cursor="pointer"
-            pr="1px"
             role="group"
             transition="opacity 0.3s ease-in-out"
           >
             <Flex
               border="4px"
               borderColor="brand.main"
-              m="2"
               borderRadius="md"
               bgColor={"blue.900"}
               transition="border-color 0.3s ease, box-shadow 0.3s ease"
@@ -47,7 +44,7 @@ const UserMenu = () => {
               gap={1}
               color={"#B7C9EF"}
               _hover={{
-                bgColor: "blue.800",
+                bgColor: "blue.600",
               }}
             >
               <Box
@@ -55,7 +52,6 @@ const UserMenu = () => {
                 borderRadius={"lg"}
                 borderColor="white"
                 p="1"
-                m="1"
               >
                 <GiHamburgerMenu size="25px" />
               </Box>
@@ -66,31 +62,38 @@ const UserMenu = () => {
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>
-          <Menu.Content>
+          <Menu.Content
+            bg="gray.800"
+            border="1px solid"
+            borderColor="gray.600"
+            borderRadius="md"
+            boxShadow="lg"
+            minW="200px"
+          >
             <UserMenuItem
               title="Ground Stations"
               path="/ground-stations"
               icon={<GrSatellite />}
             />
-            <Separator />
+            <Separator bgColor="gray.600" />
             <UserMenuItem
               title="Spacecraft"
               path="/spacecraft"
               icon={<MdOutlineSatelliteAlt />}
             />
-            <Separator />
+            <Separator bgColor="gray.600" />
             <UserMenuItem
               title="Controls"
               path="/cesium"
               icon={<GiSatelliteCommunication />}
             />
-            <Separator />
+            <Separator bgColor="gray.600" />
             <UserMenuItem
               title="Account"
               path="/account"
               icon={<FaUserAstronaut />}
             />
-            <Separator />
+            <Separator bgColor="gray.600" />
             <UserMenuItem
               title="Logout"
               path="/"

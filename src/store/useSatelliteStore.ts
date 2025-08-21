@@ -32,6 +32,7 @@ interface SatelliteState {
     id: string,
     position: SampledPositionProperty
   ) => void;
+  updateSatellite: (id: string, updates: Partial<Satellite>) => void;
   setSelectedSatellite: (id: string | null) => void;
   createSatellite: (sat: {
     id: string;
@@ -70,6 +71,15 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
     if (satellite) {
       const updatedSatellites = new Map(get().satellites);
       updatedSatellites.set(id, { ...satellite, position });
+      set({ satellites: updatedSatellites });
+    }
+  },
+
+  updateSatellite: (id: string, updates: Partial<Satellite>) => {
+    const satellite = get().satellites.get(id);
+    if (satellite) {
+      const updatedSatellites = new Map(get().satellites);
+      updatedSatellites.set(id, { ...satellite, ...updates });
       set({ satellites: updatedSatellites });
     }
   },
