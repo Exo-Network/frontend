@@ -93,10 +93,10 @@ export const SatellitesEntities = () => {
                 scale: 1000,
               },
             })}
-            description={`<div style="color: black">
-              <strong>${sat.name}</strong><br/>
-              <strong>Frequencies:</strong> ${sat.frequencies.join(", ")}<br/>
-              ${sat.description}
+            description={`<div style="color: white; padding: 15px; background: rgba(0,0,0,0.8); border-radius: 8px; font-family: Arial, sans-serif;">
+              <h3 style="margin: 0 0 10px 0; color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 5px;">${sat.name}</h3>
+              <p style="margin: 5px 0;"><strong style="color: #FFD700;">Frequencies:</strong> ${sat.frequencies.join(", ")}</p>
+              <p style="margin: 5px 0; font-style: italic; color: #E0E0E0;">${sat.description}</p>
             </div>`}
           />
           {/* Master satellite bubble - only show when selected */}
