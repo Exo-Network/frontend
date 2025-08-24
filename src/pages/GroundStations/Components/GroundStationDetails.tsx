@@ -1,20 +1,13 @@
 import { GroundStations } from "@/cesium/utils/GroundStationLoader";
 import { GroundStation } from "@/store/useGroundStationStore";
-import {
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  Spacer,
-  Text,
-  VStack,
-  Button,
-} from "@chakra-ui/react";
-import { Cartesian3, Rectangle, SingleTileImageryProvider } from "cesium";
+import * as Cesium from "@cesium/engine";
+
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Cartesian3 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
+import { useState } from "react";
 import { FaCog } from "react-icons/fa";
 import { CameraFlyTo, ImageryLayer, Viewer } from "resium";
-import { useState } from "react";
 import EditGroundStationDialog from "./EditGroundStationDialog";
 
 const GroundStationDetails = ({
@@ -66,13 +59,21 @@ const GroundStationDetails = ({
               </Button>
             </HStack>
 
-            <Text fontWeight="semibold" mt={1}>Owner:</Text>
+            <Text fontWeight="semibold" mt={1}>
+              Owner:
+            </Text>
             <Text fontSize="sm">{selectedStation.owner}</Text>
-            <Text fontWeight="semibold" mt={1}>Frequencies:</Text>
+            <Text fontWeight="semibold" mt={1}>
+              Frequencies:
+            </Text>
             <Text fontSize="sm">{selectedStation.frequencies.join(", ")}</Text>
-            <Text fontWeight="semibold" mt={1}>Cost per MB:</Text>
+            <Text fontWeight="semibold" mt={1}>
+              Cost per MB:
+            </Text>
             <Text fontSize="sm">${selectedStation.costPerMb.toFixed(2)}</Text>
-            <Text fontWeight="semibold" mt={1}>Position:</Text>
+            <Text fontWeight="semibold" mt={1}>
+              Position:
+            </Text>
             <VStack gap={0} align="start">
               <Text fontSize="sm">Latitude: {selectedStation.latitude}</Text>
               <Text fontSize="sm">Longitude: {selectedStation.longitude}</Text>
@@ -98,14 +99,13 @@ const GroundStationDetails = ({
           selectionIndicator={false}
         >
           <ImageryLayer
-            imageryProvider={
-              new SingleTileImageryProvider({
-                url: "/cesium/natural-earth-2.jpg",
-                rectangle: Rectangle.fromDegrees(-180, -90, 180, 90),
-                tileWidth: 1008,
-                tileHeight: 504,
-              })
-            }
+            imageryProvider={Cesium.TileMapServiceImageryProvider.fromUrl(
+              "/cesium/NaturalEarthII",
+              {
+                maximumLevel: 5,
+                credit: "Imagery courtesy Natural Earth",
+              }
+            )}
           />
           {selectedStation && (
             <CameraFlyTo

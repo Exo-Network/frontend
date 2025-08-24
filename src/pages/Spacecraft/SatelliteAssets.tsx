@@ -1,20 +1,28 @@
 import { hexToCesiumColor } from "@/cesium/utils/SatelliteLoader";
 import { useSatelliteStore } from "@/store/useSatelliteStore";
-import { Box, Flex, HStack, SimpleGrid, Text, VStack, Tag, TagLabel, Button, IconButton } from "@chakra-ui/react";
+import * as Cesium from "@cesium/engine";
+
+import { Satellite } from "@/store/useSatelliteStore";
 import {
-  Cartesian3,
-  Color,
-  Rectangle,
-  SingleTileImageryProvider,
-} from "cesium";
+  Box,
+  Button,
+  Flex,
+  HStack,
+  SimpleGrid,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { Cartesian3, Color } from "cesium";
 import { useState } from "react";
+import { FaCog } from "react-icons/fa";
 import { CameraFlyTo, Entity, ImageryLayer, Viewer } from "resium";
 import AddSatelliteDialog from "./addSatelliteDialog";
 import EditSatelliteDialog from "./EditSatelliteDialog";
-import { Satellite } from "@/store/useSatelliteStore";
-import { FaCog, FaPlus } from "react-icons/fa";
 
-const SatelliteList = ({ selectedSatellite, setSelectedSatellite }: {
+const SatelliteList = ({
+  selectedSatellite,
+  setSelectedSatellite,
+}: {
   selectedSatellite: Satellite | null;
   setSelectedSatellite: (sat: Satellite) => void;
 }) => {
@@ -31,7 +39,9 @@ const SatelliteList = ({ selectedSatellite, setSelectedSatellite }: {
       flexDirection="column"
     >
       <Flex justify={"space-between"}>
-        <Box fontWeight="bold" fontSize="lg">Satellites</Box>
+        <Box fontWeight="bold" fontSize="lg">
+          Satellites
+        </Box>
         <AddSatelliteDialog />
       </Flex>
       <Box flex="1" overflowY="auto" mt={4}>
@@ -50,7 +60,17 @@ const SatelliteList = ({ selectedSatellite, setSelectedSatellite }: {
               }
               onClick={() => setSelectedSatellite(sat)}
             >
-              <Box as="span" px={2} py={1} bg="blue.500" color="white" borderRadius="md" fontSize="sm" fontWeight="bold" mr={2}>
+              <Box
+                as="span"
+                px={2}
+                py={1}
+                bg="blue.500"
+                color="white"
+                borderRadius="md"
+                fontSize="sm"
+                fontWeight="bold"
+                mr={2}
+              >
                 SAT
               </Box>
               {sat.name}
@@ -62,12 +82,18 @@ const SatelliteList = ({ selectedSatellite, setSelectedSatellite }: {
   );
 };
 
-const SatelliteDetails = ({ selectedSatellite }: { selectedSatellite: Satellite | null }) => {
+const SatelliteDetails = ({
+  selectedSatellite,
+}: {
+  selectedSatellite: Satellite | null;
+}) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  
+
   // Get the latest satellite data from the store to ensure we have the most current version
   const getSatellite = useSatelliteStore((state) => state.getSatellite);
-  const currentSatellite = selectedSatellite ? getSatellite(selectedSatellite.id) : null;
+  const currentSatellite = selectedSatellite
+    ? getSatellite(selectedSatellite.id)
+    : null;
 
   const handleEditClose = () => {
     setIsEditDialogOpen(false);
@@ -113,19 +139,47 @@ const SatelliteDetails = ({ selectedSatellite }: { selectedSatellite: Satellite 
                 <FaCog size="16px" />
               </Button>
             </HStack>
-            <Text fontWeight="semibold" mt={1}>Orbit Parameters:</Text>
-            <Text fontSize="sm">• Semi-major axis: {currentSatellite.orbit?.semiMajorAxis ?? "N/A"} m</Text>
-            <Text fontSize="sm">• Eccentricity: {currentSatellite.orbit?.eccentricity ?? "N/A"}</Text>
-            <Text fontSize="sm">• Inclination: {currentSatellite.orbit?.inclination ?? "N/A"}°</Text>
-            <Text fontSize="sm">• RAAN: {currentSatellite.orbit?.raan ?? "N/A"}°</Text>
-            <Text fontSize="sm">• Argument of Periapsis: {currentSatellite.orbit?.argOfPeriapsis ?? "N/A"}°</Text>
-            <Text fontWeight="semibold" mt={1}>Frequencies:</Text>
-            <Text fontSize="sm">{currentSatellite.frequencies?.join(", ") ?? "N/A"}</Text>
-            <Text fontWeight="semibold" mt={1}>Additional Properties:</Text>
-            <Text fontSize="sm">• Path Color: {currentSatellite.pathColor}</Text>
-            <Text fontSize="sm">• Model Scale: {currentSatellite.modelScale}</Text>
-            <Text fontSize="sm">• Master Range: {currentSatellite.masterRange} m</Text>
-            <Text fontSize="sm">• Is Master: {currentSatellite.isMaster ? "Yes" : "No"}</Text>
+            <Text fontWeight="semibold" mt={1}>
+              Orbit Parameters:
+            </Text>
+            <Text fontSize="sm">
+              • Semi-major axis:{" "}
+              {currentSatellite.orbit?.semiMajorAxis ?? "N/A"} m
+            </Text>
+            <Text fontSize="sm">
+              • Eccentricity: {currentSatellite.orbit?.eccentricity ?? "N/A"}
+            </Text>
+            <Text fontSize="sm">
+              • Inclination: {currentSatellite.orbit?.inclination ?? "N/A"}°
+            </Text>
+            <Text fontSize="sm">
+              • RAAN: {currentSatellite.orbit?.raan ?? "N/A"}°
+            </Text>
+            <Text fontSize="sm">
+              • Argument of Periapsis:{" "}
+              {currentSatellite.orbit?.argOfPeriapsis ?? "N/A"}°
+            </Text>
+            <Text fontWeight="semibold" mt={1}>
+              Frequencies:
+            </Text>
+            <Text fontSize="sm">
+              {currentSatellite.frequencies?.join(", ") ?? "N/A"}
+            </Text>
+            <Text fontWeight="semibold" mt={1}>
+              Additional Properties:
+            </Text>
+            <Text fontSize="sm">
+              • Path Color: {currentSatellite.pathColor}
+            </Text>
+            <Text fontSize="sm">
+              • Model Scale: {currentSatellite.modelScale}
+            </Text>
+            <Text fontSize="sm">
+              • Master Range: {currentSatellite.masterRange} m
+            </Text>
+            <Text fontSize="sm">
+              • Is Master: {currentSatellite.isMaster ? "Yes" : "No"}
+            </Text>
           </VStack>
         ) : (
           <Text>No satellite selected</Text>
@@ -146,14 +200,13 @@ const SatelliteDetails = ({ selectedSatellite }: { selectedSatellite: Satellite 
           selectionIndicator={false}
         >
           <ImageryLayer
-            imageryProvider={
-              new SingleTileImageryProvider({
-                url: "/cesium/natural-earth-2.jpg",
-                rectangle: Rectangle.fromDegrees(-180, -90, 180, 90),
-                tileWidth: 1008,
-                tileHeight: 504,
-              })
-            }
+            imageryProvider={Cesium.TileMapServiceImageryProvider.fromUrl(
+              "/cesium/NaturalEarthII",
+              {
+                maximumLevel: 5,
+                credit: "Imagery courtesy Natural Earth",
+              }
+            )}
           />
           {currentSatellite && (
             <CameraFlyTo
@@ -207,7 +260,13 @@ const SatelliteAssets = () => {
 
   return (
     <Flex direction="column" h="full" overflow="hidden">
-      <Flex direction={{ base: "column", md: "row" }} gap={8} flex="1" h="full" overflow="hidden">
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={8}
+        flex="1"
+        h="full"
+        overflow="hidden"
+      >
         <SatelliteList
           selectedSatellite={selectedSatellite}
           setSelectedSatellite={setSelectedSatellite}

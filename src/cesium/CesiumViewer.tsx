@@ -1,6 +1,5 @@
+import * as Cesium from "@cesium/engine";
 import {
-  Rectangle,
-  SingleTileImageryProvider,
   ArcType,
   CallbackProperty,
   Cartesian3,
@@ -9,13 +8,14 @@ import {
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
 } from "cesium";
+
+import { useGroundStationStore } from "@/store/useGroundStationStore";
+import { useSatelliteStore } from "@/store/useSatelliteStore";
 import "cesium/Build/Cesium/Widgets/widgets.css";
+import { useEffect, useRef } from "react";
 import { ImageryLayer, Viewer, useCesium } from "resium";
 import { GroundStations } from "./utils/GroundStationLoader";
 import { SatellitesEntities } from "./utils/SatelliteLoader";
-import { useGroundStationStore } from "@/store/useGroundStationStore";
-import { useSatelliteStore } from "@/store/useSatelliteStore";
-import { useEffect, useRef } from "react";
 
 // Helper function to normalize frequency strings for comparison
 const normalizeFrequency = (freq: string): string => {
@@ -188,12 +188,19 @@ export const CesiumViewer = () => {
       {offline && (
         <ImageryLayer
           imageryProvider={
-            new SingleTileImageryProvider({
-              url: "/cesium/natural-earth-2.jpg", // Path relative to public/
-              rectangle: Rectangle.fromDegrees(-180, -90, 180, 90),
-              tileWidth: 1008,
-              tileHeight: 504,
-            })
+            Cesium.TileMapServiceImageryProvider.fromUrl(
+              "/cesium/NaturalEarthII",
+              {
+                maximumLevel: 5,
+                credit: "Imagery courtesy Natural Earth",
+              }
+            )
+            // new SingleTileImageryProvider({
+            //   url: "/cesium/natural-earth-2.jpg", // Path relative to public/
+            //   rectangle: Rectangle.fromDegrees(-180, -90, 180, 90),
+            //   tileWidth: 1008,
+            //   tileHeight: 504,
+            // })
           }
         />
       )}
