@@ -110,7 +110,7 @@ const initializeStore = () => {
       name: sat.name,
       frequencies: sat.frequencies,
       pathColor: sat.pathColor || "#00ffff",
-      model: sat.modelAssetId.toString(),
+      model: sat.modelAssetId ? sat.modelAssetId.toString() : undefined,
       description: sat.description,
       isMaster: sat.isMaster,
       masterRange: sat.masterRange || 0,

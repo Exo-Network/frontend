@@ -100,7 +100,7 @@ const EditGroundStationDialog = ({ groundStation, isOpen, onClose }: EditGroundS
   };
 
   return (
-    <Dialog.Root lazyMount open={isOpen} onOpenChange={(e) => onClose()}>
+    <Dialog.Root lazyMount open={isOpen} onOpenChange={() => onClose()}>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>

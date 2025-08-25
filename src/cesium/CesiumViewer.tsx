@@ -15,11 +15,11 @@ import * as satellitejs from "satellite.js";
 
 import { useGroundStationStore } from "@/store/useGroundStationStore";
 import { useSatelliteStore } from "@/store/useSatelliteStore";
-import { generateMultiSatelliteCzml } from "./utils/orbit";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ImageryLayer, Viewer, useCesium } from "resium";
 import { GroundStations } from "./utils/GroundStationLoader";
+import { EntityInfoPanel } from "./utils/EntityInfoPanel";
 
 // Helper function to normalize frequency strings for comparison
 const normalizeFrequency = (freq: string): string => {
@@ -60,7 +60,6 @@ const isEarthBlocking = (pos1: Cartesian3, pos2: Cartesian3): boolean => {
 const SatelliteLoader = () => {
   const { viewer } = useCesium();
   const satellites = useSatelliteStore((state) => state.satellites);
-  const [satelliteEntities, setSatelliteEntities] = useState<any[]>([]);
 
   useEffect(() => {
 
@@ -172,8 +171,6 @@ const SatelliteLoader = () => {
       })
       .filter(entity => entity !== null); // Remove any failed entities
     
-    setSatelliteEntities(entities);
-
     // Cleanup function
     return () => {
       entities.forEach(entity => {
@@ -181,7 +178,6 @@ const SatelliteLoader = () => {
           viewer.entities.remove(entity);
         }
       });
-      setSatelliteEntities([]);
     };
   }, [viewer, satellites]);
 
@@ -321,6 +317,10 @@ const SelectionHandler = () => {
     (state) => state.setSelectedSatellite
   );
   const satellites = useSatelliteStore((state) => state.satellites);
+  const setSelectedGroundStation = useGroundStationStore(
+    (state) => state.setSelectedGroundStation
+  );
+  const groundStations = useGroundStationStore((state) => state.stations);
 
   useEffect(() => {
     if (!viewer) return;
@@ -332,31 +332,46 @@ const SelectionHandler = () => {
 
       if (pickedObject && pickedObject.id) {
         const entityName = pickedObject.id.name;
-        // Find the satellite by name
+        
+        // Check if it's a satellite
         const satellite = Array.from(satellites.values()).find(
           (sat) => sat.name === entityName
         );
 
         if (satellite) {
           setSelectedSatellite(satellite.id);
+          setSelectedGroundStation(null); // Clear ground station selection
         } else {
-          setSelectedSatellite(null);
+          // Check if it's a ground station
+          const groundStation = Array.from(groundStations.values()).find(
+            (gs) => gs.name === entityName
+          );
+
+          if (groundStation) {
+            setSelectedGroundStation(groundStation.id);
+            setSelectedSatellite(null); // Clear satellite selection
+          } else {
+            // Neither satellite nor ground station, clear both selections
+            setSelectedSatellite(null);
+            setSelectedGroundStation(null);
+          }
         }
       } else {
+        // Nothing clicked, clear both selections
         setSelectedSatellite(null);
+        setSelectedGroundStation(null);
       }
     }, ScreenSpaceEventType.LEFT_CLICK);
 
     return () => {
       handler.destroy();
     };
-  }, [viewer, setSelectedSatellite, satellites]);
+  }, [viewer, setSelectedSatellite, satellites, setSelectedGroundStation, groundStations]);
 
   return null;
 };
 
 export const CesiumViewer = () => {
-  const offline = true;
   const viewerRef = useRef<any>(null);
 
   return (
@@ -399,6 +414,9 @@ export const CesiumViewer = () => {
         
         {/* Handle satellite selection */}
         <SelectionHandler />
+        
+        {/* Display entity information panel */}
+        <EntityInfoPanel />
         
       </Viewer>
     </div>

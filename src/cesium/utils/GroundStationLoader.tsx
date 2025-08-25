@@ -5,7 +5,6 @@ import { useGroundStationStore, GroundStation } from "@/store/useGroundStationSt
 export const GroundStations = () => {
   const GroundStationsStore = Array.from(useGroundStationStore((state) => state.stations).values());
 
-  
   return (
     <>
       {GroundStationsStore.map((station: GroundStation) => {

@@ -4,12 +4,12 @@ import stationData from "../cesium/data/groundStations.json";
 
 // Enum of the different type of frequencies
 export enum FrequencyType {
-  UHF = "UHF",
-  VHF = "VHF",
-  S = "S-Band",
-  X = "X-Band",
-  Ku = "Ku-Band",
-  Ka = "Ka-Band",
+  UHF = "uhf",
+  VHF = "vhf",
+  S = "s-band",
+  X = "x-band",
+  Ku = "ku-band",
+  Ka = "ka-band",
 }
 
 // Position type for the ground station
@@ -36,9 +36,11 @@ export interface GroundStation {
 
 interface GroundStationState {
   stations: Map<string, GroundStation>;
+  selectedGroundStationId: string | null;
   getStation: (id: string) => GroundStation | undefined;
   getAllStations: () => GroundStation[];
   updateStation: (id: string, updates: Partial<GroundStation>) => void;
+  setSelectedGroundStation: (id: string | null) => void;
   createStation: (
     station: {
       id: string;
@@ -57,6 +59,7 @@ interface GroundStationState {
 
 export const useGroundStationStore = create<GroundStationState>((set, get) => ({
   stations: new Map(),
+  selectedGroundStationId: null,
 
   getStation: (id: string) => {
     return get().stations.get(id);
@@ -74,6 +77,10 @@ export const useGroundStationStore = create<GroundStationState>((set, get) => ({
       updatedStations.set(id, updatedStation);
       set({ stations: updatedStations });
     }
+  },
+
+  setSelectedGroundStation: (id: string | null) => {
+    set({ selectedGroundStationId: id });
   },
 
   createStation: (station) => {
