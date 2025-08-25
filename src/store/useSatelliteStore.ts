@@ -1,4 +1,3 @@
-import { createSampledPosition } from "@/cesium/utils/orbit";
 import { JulianDate, SampledPositionProperty } from "cesium";
 import { create } from "zustand";
 import satelliteData from "../cesium/data/satellites.json";
@@ -7,19 +6,16 @@ export interface Satellite {
   id: string;
   name: string;
   frequencies: string[];
-  position: SampledPositionProperty;
+  position?: SampledPositionProperty; // Optional now since we use CZML
   pathColor: string;
   model?: string; // Added model property for rendering
   modelScale?: number; // Added modelScale property
   description?: string;
   isMaster?: boolean;
   masterRange: number;
-  orbit?: {
-    semiMajorAxis?: number;
-    eccentricity?: number;
-    inclination?: number;
-    raan?: number;
-    argOfPeriapsis?: number;
+  tle?: {
+    line1: string;
+    line2: string;
   };
 }
 
@@ -37,12 +33,9 @@ interface SatelliteState {
   createSatellite: (sat: {
     id: string;
     name: string;
-    orbit: {
-      semiMajorAxis?: number;
-      eccentricity?: number;
-      inclination?: number;
-      raan?: number;
-      argOfPeriapsis?: number;
+    tle: {
+      line1: string;
+      line2: string;
     };
     frequencies: string[];
     pathColor?: string;
@@ -89,25 +82,16 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
   },
 
   createSatellite: (sat) => {
-    const orbitParams = {
-      semiMajorAxis: sat.orbit.semiMajorAxis || 0,
-      eccentricity: sat.orbit.eccentricity || 0,
-      inclination: sat.orbit.inclination || 0,
-      raan: sat.orbit.raan || 0,
-      argOfPeriapsis: sat.orbit.argOfPeriapsis || 0,
-    };
-    const position = createSampledPosition(orbitParams, JulianDate.now(), 1400);
     const newSatellite: Satellite = {
       id: sat.id,
       name: sat.name,
-      orbit: sat.orbit,
+      tle: sat.tle,
       frequencies: sat.frequencies,
       pathColor: sat.pathColor || "#00ffff",
       model: sat.model,
       description: sat.description,
       isMaster: sat.isMaster,
       masterRange: sat.masterRange || 0,
-      position,
       modelScale: sat.modelScale || 10000,
     };
     const updatedSatellites = new Map(get().satellites);
@@ -125,13 +109,12 @@ const initializeStore = () => {
       id: sat.id,
       name: sat.name,
       frequencies: sat.frequencies,
-      position: createSampledPosition(sat.orbit, JulianDate.now(), 1400),
       pathColor: sat.pathColor || "#00ffff",
       model: sat.modelAssetId.toString(),
       description: sat.description,
       isMaster: sat.isMaster,
       masterRange: sat.masterRange || 0,
-      orbit: sat.orbit,
+      tle: sat.tle,
       modelScale: sat.modelScale || 10000,
     });
   });

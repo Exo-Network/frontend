@@ -26,11 +26,8 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    semiMajorAxis: "",
-    eccentricity: "",
-    inclination: "",
-    raan: "",
-    argOfPeriapsis: "",
+    tleLine1: "",
+    tleLine2: "",
     frequencies: FrequencyType.S,
     description: "",
     pathColor: "",
@@ -45,11 +42,8 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
       setFormData({
         id: satellite.id,
         name: satellite.name,
-        semiMajorAxis: satellite.orbit?.semiMajorAxis?.toString() ?? "",
-        eccentricity: satellite.orbit?.eccentricity?.toString() ?? "",
-        inclination: satellite.orbit?.inclination?.toString() ?? "",
-        raan: satellite.orbit?.raan?.toString() ?? "",
-        argOfPeriapsis: satellite.orbit?.argOfPeriapsis?.toString() ?? "",
+        tleLine1: satellite.tle?.line1 ?? "",
+        tleLine2: satellite.tle?.line2 ?? "",
         frequencies: satellite.frequencies?.[0] ?? FrequencyType.S,
         description: satellite.description ?? "",
         pathColor: satellite.pathColor ?? "#00ffff",
@@ -78,12 +72,9 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
     try {
       updateSatellite(satellite.id, {
         name: formData.name,
-        orbit: {
-          semiMajorAxis: parseFloat(formData.semiMajorAxis) || 0,
-          eccentricity: parseFloat(formData.eccentricity) || 0,
-          inclination: parseFloat(formData.inclination) || 0,
-          raan: parseFloat(formData.raan) || 0,
-          argOfPeriapsis: parseFloat(formData.argOfPeriapsis) || 0,
+        tle: {
+          line1: formData.tleLine1,
+          line2: formData.tleLine2,
         },
         frequencies: [formData.frequencies],
         description: formData.description,
@@ -147,11 +138,11 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        Semi-Major Axis (m)
+                        TLE Line 1
                       </Field.Label>
                       <Input
-                        name="semiMajorAxis"
-                        value={formData.semiMajorAxis}
+                        name="tleLine1"
+                        value={formData.tleLine1}
                         onChange={handleChange}
                         bg="gray.700"
                         borderColor="gray.500"
@@ -163,59 +154,11 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
                     </Field.Root>
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
-                        Eccentricity
+                        TLE Line 2
                       </Field.Label>
                       <Input
-                        name="eccentricity"
-                        value={formData.eccentricity}
-                        onChange={handleChange}
-                        bg="gray.700"
-                        borderColor="gray.500"
-                        color="white"
-                        _hover={{ borderColor: "gray.400" }}
-                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
-                        _placeholder={{ color: "gray.400" }}
-                      />
-                    </Field.Root>
-                    <Field.Root>
-                      <Field.Label color="white" fontWeight="medium">
-                        Inclination (°)
-                      </Field.Label>
-                      <Input
-                        name="inclination"
-                        value={formData.inclination}
-                        onChange={handleChange}
-                        bg="gray.700"
-                        borderColor="gray.500"
-                        color="white"
-                        _hover={{ borderColor: "gray.400" }}
-                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
-                        _placeholder={{ color: "gray.400" }}
-                      />
-                    </Field.Root>
-                    <Field.Root>
-                      <Field.Label color="white" fontWeight="medium">
-                        RAAN (°)
-                      </Field.Label>
-                      <Input
-                        name="raan"
-                        value={formData.raan}
-                        onChange={handleChange}
-                        bg="gray.700"
-                        borderColor="gray.500"
-                        color="white"
-                        _hover={{ borderColor: "gray.400" }}
-                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
-                        _placeholder={{ color: "gray.400" }}
-                      />
-                    </Field.Root>
-                    <Field.Root>
-                      <Field.Label color="white" fontWeight="medium">
-                        Argument of Periapsis (°)
-                      </Field.Label>
-                      <Input
-                        name="argOfPeriapsis"
-                        value={formData.argOfPeriapsis}
+                        name="tleLine2"
+                        value={formData.tleLine2}
                         onChange={handleChange}
                         bg="gray.700"
                         borderColor="gray.500"

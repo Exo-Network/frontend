@@ -1,4 +1,4 @@
-import { ArcType, CallbackProperty, Color, PolylineDashMaterialProperty, Cartesian3 } from "cesium";
+import { ArcType, CallbackProperty, Color, PolylineDashMaterialProperty, Cartesian3, Ellipsoid } from "cesium";
 import { useGroundStationStore } from "@/store/useGroundStationStore";
 import { useSatelliteStore } from "@/store/useSatelliteStore";
 import { useEffect, useRef } from "react";
@@ -7,6 +7,37 @@ import { useCesium } from "resium";
 // Helper function to normalize frequency strings for comparison
 const normalizeFrequency = (freq: string): string => {
   return freq.toLowerCase().replace(/\s+/g, '');
+};
+
+// Helper function to check if Earth blocks line of sight between two points
+const isEarthBlocking = (pos1: Cartesian3, pos2: Cartesian3): boolean => {
+  const earthRadius = Ellipsoid.WGS84.maximumRadius;
+  
+  // Vector from pos1 to pos2
+  const direction = Cartesian3.subtract(pos2, pos1, new Cartesian3());
+  const distance = Cartesian3.magnitude(direction);
+  
+  if (distance === 0) return false;
+  
+  // Check more points along the line for better accuracy
+  // Use a fixed number of checks regardless of distance for consistency
+  const numChecks = 20; // Check 20 points along the line
+  
+  for (let i = 1; i < numChecks; i++) {
+    const t = i / numChecks;
+    const checkPoint = Cartesian3.lerp(pos1, pos2, t, new Cartesian3());
+    
+    // Calculate distance from Earth center to this point
+    const distanceFromCenter = Cartesian3.magnitude(checkPoint);
+    
+    // If any point along the line is below Earth's surface, Earth is blocking
+    // Add a small buffer (1km) to account for Earth's atmosphere and ensure clean cutoff
+    if (distanceFromCenter < (earthRadius + 1000)) {
+      return true;
+    }
+  }
+  
+  return false;
 };
 
 export const LinkVisualizer = () => {
@@ -83,6 +114,11 @@ export const LinkVisualizer = () => {
                 const sat2Pos = sat2.position?.getValue(viewer.clock.currentTime);
                 
                 if (!sat1Pos || !sat2Pos) return [];
+
+                // Check if Earth is blocking the line of sight between satellites
+                if (isEarthBlocking(sat1Pos, sat2Pos)) {
+                  return []; // Don't draw link if Earth is blocking
+                }
 
                 return [sat1Pos, sat2Pos];
               }, false),

@@ -3,12 +3,9 @@
   "name": "Polar Sentinel 1",
   "description": "Low Earth observation satellite in polar orbit. Frequencies: S-band, X-band.",
   "isMaster": true,
-  "orbit": {
-    "semiMajorAxis": 7200000,
-    "eccentricity": 0.01,
-    "inclination": 90,
-    "raan": 0,
-    "argOfPeriapsis": 0
+  "tle": {
+    "line1": "1 12350U 23001F   23365.50000000  .00000000  00000+0  00000+0 0    06",
+    "line2": "2 12350  90.0000   0.0000 0000100   0.0000 270.0000 15.00000000    06"
   },
   "modelAssetId": 3294289,
   "pathColor": "#00BFFF",

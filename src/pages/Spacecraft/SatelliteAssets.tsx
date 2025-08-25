@@ -140,24 +140,13 @@ const SatelliteDetails = ({
               </Button>
             </HStack>
             <Text fontWeight="semibold" mt={1}>
-              Orbit Parameters:
+              Orbit Parameters (TLE):
             </Text>
             <Text fontSize="sm">
-              • Semi-major axis:{" "}
-              {currentSatellite.orbit?.semiMajorAxis ?? "N/A"} m
+              • TLE Line 1: {currentSatellite.tle?.line1 ?? "N/A"}
             </Text>
             <Text fontSize="sm">
-              • Eccentricity: {currentSatellite.orbit?.eccentricity ?? "N/A"}
-            </Text>
-            <Text fontSize="sm">
-              • Inclination: {currentSatellite.orbit?.inclination ?? "N/A"}°
-            </Text>
-            <Text fontSize="sm">
-              • RAAN: {currentSatellite.orbit?.raan ?? "N/A"}°
-            </Text>
-            <Text fontSize="sm">
-              • Argument of Periapsis:{" "}
-              {currentSatellite.orbit?.argOfPeriapsis ?? "N/A"}°
+              • TLE Line 2: {currentSatellite.tle?.line2 ?? "N/A"}
             </Text>
             <Text fontWeight="semibold" mt={1}>
               Frequencies:
@@ -211,11 +200,7 @@ const SatelliteDetails = ({
           {currentSatellite && (
             <CameraFlyTo
               duration={2}
-              destination={Cartesian3.fromDegrees(
-                ((currentSatellite.orbit?.raan ?? 0) as number) * 2,
-                ((currentSatellite.orbit?.inclination ?? 0) as number) * 2,
-                ((currentSatellite.orbit?.semiMajorAxis || 0) as number) * 3
-              )}
+              destination={Cartesian3.fromDegrees(0, 0, 10000000)}
             />
           )}
           {currentSatellite && (

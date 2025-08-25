@@ -1,16 +1,45 @@
 [
   {
-    "id": "exo-inclined-1",
-    "name": "InclinaSat A",
-    "description": "Leading the formation with precision navigation and advanced communication capabilities.",
+    "id": "leo-polar-1",
+    "name": "Polar Sentinel 1",
+    "description": "Low Earth observation satellite in polar orbit at 500km altitude.",
     "isMaster": true,
     "masterRange": 1000000,
-    "orbit": {
-      "semiMajorAxis": 12000000,
-      "eccentricity": 0.1,
-      "inclination": 55,
-      "raan": 180,
-      "argOfPeriapsis": 90
+    "tle": {
+      "line1": "1 12345U 23001A   23365.50000000  .00000000  00000+0  00000+0 0    01",
+      "line2": "2 12345  90.0000   0.0000 0000100   0.0000 270.0000 15.00000000    01"
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#00BFFF",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "leo-polar-2",
+    "name": "Polar Sentinel 2",
+    "description": "Formation satellite in polar orbit at 500km altitude, 90° phase separation.",
+    "isMaster": false,
+    "masterRange": 0,
+    "tle": {
+      "line1": "1 12346U 23001B   23365.50000000  .00000000  00000+0  00000+0 0    02",
+      "line2": "2 12346  90.0000   0.0000 0000100  90.0000 180.0000 15.00000000    02"
+    },
+    "modelAssetId": 3294289,
+    "pathColor": "#1E90FF",
+    "pathWidth": 2,
+    "modelScale": 1000,
+    "frequencies": ["S-band", "X-band"]
+  },
+  {
+    "id": "leo-inclined-1",
+    "name": "InclinaSat A",
+    "description": "Low Earth satellite in 45° inclined orbit at 600km altitude.",
+    "isMaster": false,
+    "masterRange": 0,
+    "tle": {
+      "line1": "1 12347U 23001C   23365.50000000  .00000000  00000+0  00000+0 0    03",
+      "line2": "2 12347  45.0000 180.0000 0000100   0.0000 270.0000 14.00000000    03"
     },
     "modelAssetId": 3294289,
     "pathColor": "#FF4500",
@@ -19,17 +48,14 @@
     "frequencies": ["S-band", "X-band"]
   },
   {
-    "id": "exo-inclined-2",
+    "id": "leo-inclined-2",
     "name": "InclinaSat B",
-    "description": "Formation satellite maintaining optimal spacing with synchronized orbital maneuvers.",
+    "description": "Formation satellite in 45° inclined orbit at 600km altitude, 120° phase separation.",
     "isMaster": false,
     "masterRange": 0,
-    "orbit": {
-      "semiMajorAxis": 12000200,
-      "eccentricity": 0.1,
-      "inclination": 55,
-      "raan": 180,
-      "argOfPeriapsis": 90.5
+    "tle": {
+      "line1": "1 12348U 23001D   23365.50000000  .00000000  00000+0  00000+0 0    04",
+      "line2": "2 12348  45.0000 180.0000 0000100 120.0000  30.0000 14.00000000    04"
     },
     "modelAssetId": 3294289,
     "pathColor": "#FF6347",
@@ -38,36 +64,14 @@
     "frequencies": ["S-band", "X-band"]
   },
   {
-    "id": "exo-inclined-3",
-    "name": "InclinaSat C",
-    "description": "Formation satellite providing redundancy and enhanced coverage patterns.",
+    "id": "leo-equatorial-1",
+    "name": "EquaCom LEO",
+    "description": "Low Earth communications satellite in equatorial orbit at 400km altitude.",
     "isMaster": false,
     "masterRange": 0,
-    "orbit": {
-      "semiMajorAxis": 11999800,
-      "eccentricity": 0.1,
-      "inclination": 55,
-      "raan": 180,
-      "argOfPeriapsis": 89.5
-    },
-    "modelAssetId": 3294289,
-    "pathColor": "#FF8C00",
-    "pathWidth": 2,
-    "modelScale": 1000,
-    "frequencies": ["S-band", "X-band"]
-  },
-  {
-    "id": "exo-equatorial",
-    "name": "EquaCom",
-    "description": "Geostationary communications hub providing continuous global coverage from 36,000km altitude.",
-    "isMaster": false,
-    "masterRange": 0,
-    "orbit": {
-      "semiMajorAxis": 22164000,
-      "eccentricity": 0.0,
-      "inclination": 0,
-      "raan": 0,
-      "argOfPeriapsis": 0
+    "tle": {
+      "line1": "1 12349U 23001E   23365.50000000  .00000000  00000+0  00000+0 0    05",
+      "line2": "2 12349   0.0000   0.0000 0000100   0.0000 270.0000 16.00000000    05"
     },
     "modelAssetId": 3294289,
     "pathColor": "#FFD700",
@@ -76,20 +80,17 @@
     "frequencies": ["S-band", "X-band"]
   },
   {
-    "id": "exo-heo",
-    "name": "MolniyaSat",
-    "description": "High-eccentricity orbit specialist delivering extended coverage over polar regions.",
+    "id": "leo-sun-sync",
+    "name": "SunSync Observer",
+    "description": "Sun-synchronous satellite in low Earth orbit at 700km altitude.",
     "isMaster": false,
     "masterRange": 0,
-    "orbit": {
-      "semiMajorAxis": 20600000,
-      "eccentricity": 0.14,
-      "inclination": 63.4,
-      "raan": 270,
-      "argOfPeriapsis": 270
+    "tle": {
+      "line1": "1 12350U 23001F   23365.50000000  .00000000  00000+0  00000+0 0    06",
+      "line2": "2 12350  98.0000   0.0000 0000100   0.0000 270.0000 14.50000000    06"
     },
     "modelAssetId": 3294289,
-    "pathColor": "#9400D3",
+    "pathColor": "#32CD32",
     "pathWidth": 2,
     "modelScale": 1000,
     "frequencies": ["S-band", "X-band"]

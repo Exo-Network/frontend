@@ -1,49 +1,11 @@
 import { useSatelliteStore } from "@/store/useSatelliteStore";
 import {
   Cartesian3,
-  Math as CesiumMath,
   Color,
-  Matrix3,
   CallbackProperty,
 } from "cesium";
 import { Entity } from "resium";
 import React from "react";
-
-type OrbitParams = {
-  semiMajorAxis: number;
-  eccentricity: number;
-  inclination: number;
-  raan: number;
-  argOfPeriapsis: number;
-};
-
-export const toECI = (angleDeg: number, orbit: OrbitParams): Cartesian3 => {
-  const ν = CesiumMath.toRadians(angleDeg);
-  const a = orbit.semiMajorAxis;
-  const e = orbit.eccentricity;
-
-  const r = (a * (1 - e * e)) / (1 + e * Math.cos(ν));
-  const xOrb = r * Math.cos(ν);
-  const yOrb = r * Math.sin(ν);
-  const zOrb = 0;
-  const perifocal = new Cartesian3(xOrb, yOrb, zOrb);
-
-  const i = orbit.inclination;
-  const Ω = orbit.raan;
-  const ω = orbit.argOfPeriapsis;
-
-  const Rz_RAAN = Matrix3.fromRotationZ(Ω, new Matrix3());
-  const Rx_Inc = Matrix3.fromRotationX(i, new Matrix3());
-  const Rz_ArgPeriapsis = Matrix3.fromRotationZ(ω, new Matrix3());
-
-  const rotation = Matrix3.multiply(
-    Rz_RAAN,
-    Matrix3.multiply(Rx_Inc, Rz_ArgPeriapsis, new Matrix3()),
-    new Matrix3()
-  );
-
-  return Matrix3.multiplyByVector(rotation, perifocal, new Cartesian3());
-};
 
 export const hexToCesiumColor = (hex: string): Color => {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -67,54 +29,59 @@ export const SatellitesEntities = () => {
     (state) => state.selectedSatelliteId
   );
 
+  console.log("SatellitesEntities: Rendering", satellites.size, "satellites");
+
   return (
     <>
-      {Array.from(satellites.values()).map((sat) => (
-        <React.Fragment key={sat.id}>
-          <Entity
-            name={sat.name}
-            position={sat.position}
-            path={{
-              resolution: 1,
-              material: hexToCesiumColor(sat.pathColor),
-              width: 2,
-              leadTime: Number.POSITIVE_INFINITY,
-              trailTime: Number.POSITIVE_INFINITY,
-            }}
-            point={{
-              pixelSize: 8,
-              color: hexToCesiumColor(sat.pathColor),
-              outlineColor: Color.BLACK,
-              outlineWidth: 1,
-            }}
-            {...(sat.model && {
-              model: {
-                uri: "/models/Sentinel-6.glb",
-                scale: 1000,
-              },
-            })}
-            description={`<div style="color: white; padding: 15px; background: rgba(0,0,0,0.8); border-radius: 8px; font-family: Arial, sans-serif;">
-              <h3 style="margin: 0 0 10px 0; color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 5px;">${sat.name}</h3>
-              <p style="margin: 5px 0;"><strong style="color: #FFD700;">Frequencies:</strong> ${sat.frequencies.join(", ")}</p>
-              <p style="margin: 5px 0; font-style: italic; color: #E0E0E0;">${sat.description}</p>
-            </div>`}
-          />
-          {/* Master satellite bubble - only show when selected */}
-          {sat.isMaster && selectedSatelliteId === sat.id && (
+      {Array.from(satellites.values()).map((sat) => {
+        console.log("SatellitesEntities: Satellite", sat.name, "position:", sat.position);
+        return (
+          <React.Fragment key={sat.id}>
             <Entity
-              name={`${sat.name} Master Bubble`}
+              name={sat.name}
               position={sat.position}
-              ellipsoid={{
-                radii: createPulsingBubbleSize(sat.masterRange),
-                material: hexToCesiumColor(sat.pathColor).withAlpha(0.08), // Semi-transparent
-                outline: true,
-                outlineColor: hexToCesiumColor("#800080"),
-                outlineWidth: 2,
+              path={{
+                resolution: 1,
+                material: hexToCesiumColor(sat.pathColor),
+                width: 2,
+                leadTime: Number.POSITIVE_INFINITY,
+                trailTime: Number.POSITIVE_INFINITY,
               }}
+              point={{
+                pixelSize: 8,
+                color: hexToCesiumColor(sat.pathColor),
+                outlineColor: Color.BLACK,
+                outlineWidth: 1,
+              }}
+              {...(sat.model && {
+                model: {
+                  uri: "/models/Sentinel-6.glb",
+                  scale: 1000,
+                },
+              })}
+              description={`<div style="color: white; padding: 15px; background: rgba(0,0,0,0.8); border-radius: 8px; font-family: Arial, sans-serif;">
+                <h3 style="margin: 0 0 10px 0; color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 5px;">${sat.name}</h3>
+                <p style="margin: 5px 0;"><strong style="color: #FFD700;">Frequencies:</strong> ${sat.frequencies.join(", ")}</p>
+                <p style="margin: 5px 0; font-style: italic; color: #E0E0E0;">${sat.description}</p>
+              </div>`}
             />
-          )}
-        </React.Fragment>
-      ))}
+            {/* Master satellite bubble - only show when selected */}
+            {sat.isMaster && selectedSatelliteId === sat.id && (
+              <Entity
+                name={`${sat.name} Master Bubble`}
+                position={sat.position}
+                ellipsoid={{
+                  radii: createPulsingBubbleSize(sat.masterRange),
+                  material: hexToCesiumColor(sat.pathColor).withAlpha(0.08), // Semi-transparent
+                  outline: true,
+                  outlineColor: hexToCesiumColor("#800080"),
+                  outlineWidth: 2,
+                }}
+              />
+            )}
+          </React.Fragment>
+        );
+      })}
     </>
   );
 };
