@@ -1,6 +1,6 @@
 import { Cartesian3 } from "cesium";
 import { create } from "zustand";
-import stationData from "../cesium/data/groundStations.json";
+import { groundStationsApi } from "../services/api";
 
 // Enum of the different type of frequencies
 export enum FrequencyType {
@@ -37,6 +37,7 @@ export interface GroundStation {
 interface GroundStationState {
   stations: Map<string, GroundStation>;
   selectedGroundStationId: string | null;
+  isLoading: boolean;
   getStation: (id: string) => GroundStation | undefined;
   getAllStations: () => GroundStation[];
   updateStation: (id: string, updates: Partial<GroundStation>) => void;
@@ -55,11 +56,13 @@ interface GroundStationState {
       description: string;
     } & Position
   ) => void;
+  refreshStations: () => Promise<void>;
 }
 
 export const useGroundStationStore = create<GroundStationState>((set, get) => ({
   stations: new Map(),
   selectedGroundStationId: null,
+  isLoading: false,
 
   getStation: (id: string) => {
     return get().stations.get(id);
@@ -109,39 +112,46 @@ export const useGroundStationStore = create<GroundStationState>((set, get) => ({
     updatedStations.set(station.id, newStation);
     set({ stations: updatedStations });
   },
+
+  refreshStations: async () => {
+    set({ isLoading: true });
+    try {
+      const stationData = await groundStationsApi.getAll();
+      const stations = new Map<string, GroundStation>();
+
+      stationData.forEach((station: any) => {
+        const position = Cartesian3.fromDegrees(
+          station.lon,
+          station.lat,
+          station.alt || 0
+        );
+
+        stations.set(station.id, {
+          id: station.id,
+          onchain: true,
+          name: station.name,
+          longitude: station.lon,
+          latitude: station.lat,
+          altitude: station.alt || 0,
+          frequencies: station.frequencies.map(
+            (frequency: any) => frequency as FrequencyType
+          ),
+          cartesianPosition: position,
+          color: station.color,
+          owner: station.owner,
+          costPerMb: station.costPerMb,
+          description: station.description,
+        });
+      });
+
+      set({ stations, isLoading: false });
+      console.log(`✅ Refreshed ${stations.size} ground stations from API`);
+    } catch (error) {
+      console.error('❌ Failed to refresh ground stations from API:', error);
+      set({ isLoading: false });
+    }
+  },
 }));
 
-// Initialize the store with data
-const initializeStore = () => {
-  const stations = new Map<string, GroundStation>();
-
-  stationData.forEach((station) => {
-    const position = Cartesian3.fromDegrees(
-      station.lon,
-      station.lat,
-      station.alt || 0
-    );
-
-    stations.set(station.id, {
-      id: station.id,
-      onchain: true,
-      name: station.name,
-      longitude: station.lon,
-      latitude: station.lat,
-      altitude: station.alt || 0,
-      frequencies: station.frequencies.map(
-        (frequency) => frequency as FrequencyType
-      ),
-      cartesianPosition: position,
-      color: station.color,
-      owner: station.owner,
-      costPerMb: station.costPerMb,
-      description: station.description,
-    });
-  });
-
-  useGroundStationStore.setState({ stations });
-};
-
-// Initialize the store when the module is loaded
-initializeStore();
+// Store will be initialized by the useApiData hook
+// No automatic initialization here to avoid conflicts

@@ -1,6 +1,6 @@
-import { JulianDate, SampledPositionProperty } from "cesium";
+import { SampledPositionProperty } from "cesium";
 import { create } from "zustand";
-import satelliteData from "../cesium/data/satellites.json";
+import { satellitesApi } from "../services/api";
 
 export interface Satellite {
   id: string;
@@ -22,6 +22,7 @@ export interface Satellite {
 interface SatelliteState {
   satellites: Map<string, Satellite>;
   selectedSatelliteId: string | null;
+  isLoading: boolean;
   getSatellite: (id: string) => Satellite | undefined;
   getAllSatellites: () => Satellite[];
   updateSatellitePosition: (
@@ -45,11 +46,13 @@ interface SatelliteState {
     isMaster?: boolean;
     masterRange?: number;
   }) => void;
+  refreshSatellites: () => Promise<void>;
 }
 
 export const useSatelliteStore = create<SatelliteState>((set, get) => ({
   satellites: new Map(),
   selectedSatelliteId: null,
+  isLoading: false,
 
   getSatellite: (id: string) => {
     return get().satellites.get(id);
@@ -98,29 +101,36 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
     updatedSatellites.set(sat.id, newSatellite);
     set({ satellites: updatedSatellites });
   },
+
+  refreshSatellites: async () => {
+    set({ isLoading: true });
+    try {
+      const satelliteData = await satellitesApi.getAll();
+      const satellites = new Map<string, Satellite>();
+
+      satelliteData.forEach((sat: any) => {
+        satellites.set(sat.id, {
+          id: sat.id,
+          name: sat.name,
+          frequencies: sat.frequencies,
+          pathColor: sat.pathColor || "#00ffff",
+          model: sat.modelAssetId ? sat.modelAssetId.toString() : undefined,
+          description: sat.description,
+          isMaster: sat.isMaster,
+          masterRange: sat.masterRange || 0,
+          tle: sat.tle,
+          modelScale: sat.modelScale || 10000,
+        });
+      });
+
+      set({ satellites, isLoading: false });
+      console.log(`✅ Refreshed ${satellites.size} satellites from API`);
+    } catch (error) {
+      console.error('❌ Failed to refresh satellites from API:', error);
+      set({ isLoading: false });
+    }
+  },
 }));
 
-// Initialize the store with data
-const initializeStore = () => {
-  const satellites = new Map<string, Satellite>();
-
-  satelliteData.forEach((sat) => {
-    satellites.set(sat.id, {
-      id: sat.id,
-      name: sat.name,
-      frequencies: sat.frequencies,
-      pathColor: sat.pathColor || "#00ffff",
-      model: sat.modelAssetId ? sat.modelAssetId.toString() : undefined,
-      description: sat.description,
-      isMaster: sat.isMaster,
-      masterRange: sat.masterRange || 0,
-      tle: sat.tle,
-      modelScale: sat.modelScale || 10000,
-    });
-  });
-
-  useSatelliteStore.setState({ satellites });
-};
-
-// Initialize the store when the module is loaded
-initializeStore();
+// Store will be initialized by the useApiData hook
+// No automatic initialization here to avoid conflicts
