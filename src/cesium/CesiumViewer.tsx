@@ -152,15 +152,7 @@ const SatelliteLoader = () => {
               trailTime: orbitalPeriod, // Show trail for one orbital period
             },
             
-            // Master satellite bubble (if applicable)
-            ...(sat.isMaster && {
-              ellipsoid: {
-                radii: new Cesium.Cartesian3(sat.masterRange || 1000000, sat.masterRange || 1000000, sat.masterRange || 1000000),
-                material: Cesium.Color.fromCssColorString(sat.pathColor).withAlpha(0.1),
-                outline: true,
-                outlineColor: Cesium.Color.PURPLE,
-              }
-            })
+
           });
           
           return entity;

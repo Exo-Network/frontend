@@ -65,20 +65,7 @@ export const SatellitesEntities = () => {
                 <p style="margin: 5px 0; font-style: italic; color: #E0E0E0;">${sat.description}</p>
               </div>`}
             />
-            {/* Master satellite bubble - only show when selected */}
-            {sat.isMaster && selectedSatelliteId === sat.id && (
-              <Entity
-                name={`${sat.name} Master Bubble`}
-                position={sat.position}
-                ellipsoid={{
-                  radii: createPulsingBubbleSize(sat.masterRange),
-                  material: hexToCesiumColor(sat.pathColor).withAlpha(0.08), // Semi-transparent
-                  outline: true,
-                  outlineColor: hexToCesiumColor("#800080"),
-                  outlineWidth: 2,
-                }}
-              />
-            )}
+
           </React.Fragment>
         );
       })}

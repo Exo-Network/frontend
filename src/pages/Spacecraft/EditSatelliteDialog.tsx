@@ -32,8 +32,7 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
     description: "",
     pathColor: "",
     modelScale: "",
-    isMaster: false,
-    masterRange: "",
+
   });
 
   // Update form data when satellite prop changes
@@ -48,8 +47,7 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
         description: satellite.description ?? "",
         pathColor: satellite.pathColor ?? "#00ffff",
         modelScale: satellite.modelScale?.toString() ?? "10000",
-        isMaster: satellite.isMaster ?? false,
-        masterRange: satellite.masterRange?.toString() ?? "0",
+
       });
     }
   }, [satellite]);
@@ -80,8 +78,7 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
         description: formData.description,
         pathColor: formData.pathColor,
         modelScale: parseFloat(formData.modelScale) || 10000,
-        isMaster: formData.isMaster,
-        masterRange: parseFloat(formData.masterRange) || 0,
+
       });
       onClose();
     } catch (err) {
@@ -225,22 +222,7 @@ const EditSatelliteDialog = ({ satellite, isOpen, onClose }: EditSatelliteDialog
                         _placeholder={{ color: "gray.400" }}
                       />
                     </Field.Root>
-                    <Field.Root>
-                      <Field.Label color="white" fontWeight="medium">
-                        Master Range (m)
-                      </Field.Label>
-                      <Input
-                        name="masterRange"
-                        value={formData.masterRange}
-                        onChange={handleChange}
-                        bg="gray.700"
-                        borderColor="gray.500"
-                        color="white"
-                        _hover={{ borderColor: "gray.400" }}
-                        _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
-                        _placeholder={{ color: "gray.400" }}
-                      />
-                    </Field.Root>
+
                     <Field.Root>
                       <Field.Label color="white" fontWeight="medium">
                         Description

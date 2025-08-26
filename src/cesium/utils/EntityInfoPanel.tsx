@@ -90,16 +90,7 @@ export const EntityInfoPanel = () => {
                 ))}
               </HStack>
             </HStack>
-            {selectedSatellite.isMaster && (
-              <HStack gap={2}>
-                <Text fontSize="sm" fontWeight="semibold">
-                  Master Range:
-                </Text>
-                <Text fontSize="sm">
-                  {selectedSatellite.masterRange.toLocaleString()} m
-                </Text>
-              </HStack>
-            )}
+
             <Button
               size="sm"
               colorScheme="blue"

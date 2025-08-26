@@ -163,12 +163,7 @@ const SatelliteDetails = ({
             <Text fontSize="sm">
               • Model Scale: {currentSatellite.modelScale}
             </Text>
-            <Text fontSize="sm">
-              • Master Range: {currentSatellite.masterRange} m
-            </Text>
-            <Text fontSize="sm">
-              • Is Master: {currentSatellite.isMaster ? "Yes" : "No"}
-            </Text>
+
           </VStack>
         ) : (
           <Text>No satellite selected</Text>

@@ -11,8 +11,6 @@ export interface Satellite {
   model?: string; // Added model property for rendering
   modelScale?: number; // Added modelScale property
   description?: string;
-  isMaster?: boolean;
-  masterRange: number;
   tle?: {
     line1: string;
     line2: string;
@@ -43,8 +41,6 @@ interface SatelliteState {
     model?: string;
     modelScale?: number;
     description?: string;
-    isMaster?: boolean;
-    masterRange?: number;
   }) => void;
   refreshSatellites: () => Promise<void>;
 }
@@ -93,8 +89,6 @@ export const useSatelliteStore = create<SatelliteState>((set, get) => ({
       pathColor: sat.pathColor || "#00ffff",
       model: sat.model,
       description: sat.description,
-      isMaster: sat.isMaster,
-      masterRange: sat.masterRange || 0,
       modelScale: sat.modelScale || 10000,
     };
     const updatedSatellites = new Map(get().satellites);
