@@ -5,6 +5,7 @@ import { CesiumPage } from "./pages/CesiumPage";
 import { GroundStationPage } from "./pages/GroundStations/GroundStation";
 import { Home } from "./pages/Home/Home";
 import { SpacecraftPage } from "./pages/Spacecraft/Spacecraft";
+import { MeshWindows } from "./pages/MeshWindows";
 import Account from "./pages/Account/Account";
 import { useApiData } from "./hooks/useApiData";
 import { LoadingSpinner } from "./components/ui/LoadingSpinner";
@@ -49,6 +50,7 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/spacecraft" element={<SpacecraftPage />} />
         <Route path="/ground-stations" element={<GroundStationPage />} />
+        <Route path="/mesh-windows" element={<MeshWindows />} />
         <Route path="/account" element={<Account />} />
         {/* Add more routes as needed */}
         <Route path="/cesium" element={<CesiumPage />} />

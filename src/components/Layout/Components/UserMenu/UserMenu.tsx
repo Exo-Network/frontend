@@ -11,7 +11,7 @@ import {
 import { FaUserAstronaut } from "react-icons/fa";
 import { GiHamburgerMenu, GiSatelliteCommunication } from "react-icons/gi";
 import { GrSatellite } from "react-icons/gr";
-import { MdOutlineSatelliteAlt } from "react-icons/md";
+import { MdOutlineSatelliteAlt, MdOutlineHub } from "react-icons/md";
 import { RiLogoutCircleRFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import UserMenuItem from "./UserMenuItem";
@@ -80,6 +80,12 @@ const UserMenu = () => {
               title="Spacecraft"
               path="/spacecraft"
               icon={<MdOutlineSatelliteAlt />}
+            />
+            <Separator bgColor="gray.600" />
+            <UserMenuItem
+              title="Mesh Windows"
+              path="/mesh-windows"
+              icon={<MdOutlineHub />}
             />
             <Separator bgColor="gray.600" />
             <UserMenuItem

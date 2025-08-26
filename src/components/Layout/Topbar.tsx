@@ -16,6 +16,8 @@ const TopBar = () => {
         return "Spacecrafts";
       case "/ground-stations":
         return "Ground Stations";
+      case "/mesh-windows":
+        return "Mesh Windows";
       case "/account":
         return "Account";
       case "/cesium":
