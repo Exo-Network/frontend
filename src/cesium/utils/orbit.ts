@@ -13,8 +13,6 @@ export const generateSatelliteCzml = (satellite: {
   pathColor: string;
   modelScale?: number;
   description?: string;
-  isMaster?: boolean;
-  masterRange?: number;
 }) => {
   const czml = [
     {
@@ -68,21 +66,7 @@ export const generateSatelliteCzml = (satellite: {
         trailTime: 86400, // 24 hours
       },
 
-      // Master satellite bubble (if applicable)
-      ...(satellite.isMaster && {
-        ellipsoid: {
-          radii: satellite.masterRange || 1000000,
-          material: {
-            color: {
-              rgba: [...hexToRgba(satellite.pathColor).slice(0, 3), 20], // Very transparent
-            },
-          },
-          outline: true,
-          outlineColor: {
-            rgba: [128, 0, 128, 255], // Purple outline
-          },
-        },
-      }),
+
     },
   ];
 
@@ -106,8 +90,6 @@ export const generateMultiSatelliteCzml = (
     pathColor: string;
     modelScale?: number;
     description?: string;
-    isMaster?: boolean;
-    masterRange?: number;
   }>
 ) => {
   const czml = [

@@ -1,6 +1,7 @@
 import { hexToCesiumColor } from "@/cesium/utils/SatelliteLoader";
 import { useSatelliteStore } from "@/store/useSatelliteStore";
 import * as Cesium from "@cesium/engine";
+import { Cartesian3 } from "cesium";
 
 import { Satellite } from "@/store/useSatelliteStore";
 import {
@@ -12,12 +13,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Cartesian3, Color } from "cesium";
+import { Color } from "cesium";
 import { useState } from "react";
 import { FaCog } from "react-icons/fa";
 import { CameraFlyTo, Entity, ImageryLayer, Viewer } from "resium";
 import AddSatelliteDialog from "./addSatelliteDialog";
 import EditSatelliteDialog from "./EditSatelliteDialog";
+
+
 
 const SatelliteList = ({
   selectedSatellite,
@@ -27,7 +30,11 @@ const SatelliteList = ({
   setSelectedSatellite: (sat: Satellite) => void;
 }) => {
   const satellites = useSatelliteStore((state) => state.satellites);
+  const isLoading = useSatelliteStore((state) => state.isLoading);
   const satelliteList = Array.from(satellites.values());
+  
+  console.log('SatelliteList: satellites count:', satellites.size, 'isLoading:', isLoading);
+  
   return (
     <Box
       w={{ base: "100%", md: "30%" }}
@@ -45,38 +52,44 @@ const SatelliteList = ({
         <AddSatelliteDialog />
       </Flex>
       <Box flex="1" overflowY="auto" mt={4}>
-        <SimpleGrid columns={{ base: 1, md: 1, lg: 1 }} gap={4}>
-          {satelliteList.map((sat) => (
-            <Box
-              key={sat.id}
-              p={4}
-              borderWidth="1px"
-              borderRadius="md"
-              cursor="pointer"
-              bg={selectedSatellite?.id === sat.id ? "gray.700" : "gray.800"}
-              color="white"
-              borderColor={
-                selectedSatellite?.id === sat.id ? "green.400" : "gray.600"
-              }
-              onClick={() => setSelectedSatellite(sat)}
-            >
+        {isLoading ? (
+          <Text color="gray.400">Loading satellites...</Text>
+        ) : satelliteList.length === 0 ? (
+          <Text color="gray.400">No satellites found</Text>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 1, lg: 1 }} gap={4}>
+            {satelliteList.map((sat) => (
               <Box
-                as="span"
-                px={2}
-                py={1}
-                bg="blue.500"
-                color="white"
+                key={sat.id}
+                p={4}
+                borderWidth="1px"
                 borderRadius="md"
-                fontSize="sm"
-                fontWeight="bold"
-                mr={2}
+                cursor="pointer"
+                bg={selectedSatellite?.id === sat.id ? "gray.700" : "gray.800"}
+                color="white"
+                borderColor={
+                  selectedSatellite?.id === sat.id ? "green.400" : "gray.600"
+                }
+                onClick={() => setSelectedSatellite(sat)}
               >
-                SAT
+                <Box
+                  as="span"
+                  px={2}
+                  py="1"
+                  bg="blue.500"
+                  color="white"
+                  borderRadius="md"
+                  fontSize="sm"
+                  fontWeight="bold"
+                  mr={2}
+                >
+                  SAT
+                </Box>
+                {sat.name}
               </Box>
-              {sat.name}
-            </Box>
-          ))}
-        </SimpleGrid>
+            ))}
+          </SimpleGrid>
+        )}
       </Box>
     </Box>
   );
@@ -198,7 +211,7 @@ const SatelliteDetails = ({
               destination={Cartesian3.fromDegrees(0, 0, 10000000)}
             />
           )}
-          {currentSatellite && (
+          {currentSatellite && currentSatellite.position && (
             <Entity
               key={`${currentSatellite.id}-${currentSatellite.pathColor}-${currentSatellite.modelScale}`}
               name={currentSatellite.name}
@@ -234,6 +247,10 @@ const SatelliteDetails = ({
 const SatelliteAssets = () => {
   const satellites = useSatelliteStore((state) => state.satellites);
   const satelliteList = Array.from(satellites.values());
+  
+  console.log('SatelliteAssets: satellites count:', satellites.size);
+  console.log('SatelliteAssets: satelliteList:', satelliteList);
+  
   const [selectedSatellite, setSelectedSatellite] = useState(
     satelliteList.length > 0 ? satelliteList[0] : null
   );
